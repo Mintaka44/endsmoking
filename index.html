@@ -102,6 +102,10 @@
         /* Bouton Agent IA */
         .ai-agent-wrapper {
             margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
         .btn-ai-agent {
             background: rgba(124, 77, 255, 0.2);
@@ -121,17 +125,87 @@
             transform: translateY(-1px);
         }
 
+        /* Bouton Discord */
+        .btn-discord-chat {
+            background: rgba(88, 101, 242, 0.2);
+            border: 1px dashed rgba(88, 101, 242, 0.6);
+            color: #dee0fc;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        .btn-discord-chat:hover {
+            background: rgba(88, 101, 242, 0.4);
+            border-color: rgba(88, 101, 242, 1);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
         h1 {
             font-size: 2.4rem;
             margin-bottom: 0.8rem;
             font-weight: 600;
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            user-select: none;
         }
+
+        /* Bloc regroupant l'indicateur de date et la durée globale */
+        .date-management-zone {
+            margin-bottom: 2rem;
+        }
+
+        /* Indicateur de date cliquable */
+        .clickable-date-badge {
+            display: inline-block;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            background: rgba(0, 0, 0, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .clickable-date-badge:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Texte de la durée globale convertie */
+        .duration-summary-text {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 6px;
+            font-style: italic;
+        }
+
+        /* Panneau de configuration de la date */
+        .secret-date-picker {
+            display: none;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 12px;
+            border-radius: 14px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            animation: fadeIn 0.2s ease;
+        }
+        .secret-date-picker label { font-size: 0.85rem; color: #e0e0e0; margin-right: 8px; }
+        .secret-date-picker input { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 10px; border-radius: 8px; font-size: 0.9rem; outline: none; }
+        .secret-date-picker button { background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 12px; margin-left: 6px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 500; transition: background 0.2s; }
+        .secret-date-picker button:hover { background: rgba(255,255,255,0.3); }
 
         .subtitle {
             font-size: 1.1rem;
             opacity: 0.95;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
         }
 
@@ -140,7 +214,7 @@
             display: flex;
             justify-content: space-around;
             gap: 15px;
-            margin-bottom: 2.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .time-box {
@@ -172,16 +246,20 @@
         }
 
         #complete-message {
-            font-size: 2rem;
-            font-weight: bold;
+            font-size: 1.5rem;
+            font-weight: 500;
             display: none;
-            margin-bottom: 2.5rem;
-            animation: breathe 3s ease-in-out infinite;
+            margin-bottom: 1.5rem;
+            padding: 0 10px;
+            line-height: 1.4;
+            color: #e0f7fa;
+            animation: breathe 4s ease-in-out infinite;
+            user-select: none;
         }
 
         @keyframes breathe {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
+            0%, 100% { transform: scale(1); opacity: 0.95; }
+            50% { transform: scale(1.02); opacity: 1; }
         }
 
         /* --- ZONE SIMULATEUR FINANCIER --- */
@@ -398,13 +476,14 @@
             <button id="btn-cannabis" class="toggle-btn" onclick="setSubstance('cannabis')">Option Cannabis</button>
         </div>
 
-        <!-- ACCÈS AGENT IA -->
+        <!-- ACCÈS AGENTS & LIENS EXTERNES -->
         <div class="ai-agent-wrapper">
             <button class="btn-ai-agent" onclick="openAIModal()">🤖 Activer mon Agent IA de poche</button>
+            <button class="btn-discord-chat" onclick="openDiscord()">💬 Discord</button>
         </div>
 
         <h1 id="main-title">Le Grand Départ <span id="main-emoji">🚭</span></h1>
-        
+
         <div id="countdown-section">
             <p class="subtitle">Libres, ensemble et à pleins poumons. Le décompte :</p>
             <div id="countdown" class="countdown-grid">
@@ -415,8 +494,26 @@
             </div>
         </div>
 
-        <div id="complete-message">
-            C'est le moment ! Respirez l'air pur de la forêt. 🌱
+        <!-- ÉLÉMENT DYNAMIQUE (31 PHRASES POSITIVES) -->
+        <div id="complete-message"></div>
+
+        <!-- ZONE DE GESTION DE LA DATE -->
+        <div class="date-management-zone">
+            <!-- INDICATEUR DE DATE CLIQUABLE DISCRET -->
+            <div id="date-badge" class="clickable-date-badge" onclick="toggleSecretDatePicker()">
+                📅 Date d'arrêt : <span id="lbl-target-date">--/--/----</span> ⚙️
+            </div>
+            
+            <!-- TEXTE DYNAMIQUE DE DURÉE GLOBALE -->
+            <div id="duration-summary" class="duration-summary-text"></div>
+            
+            <!-- MODULE DE CONFIGURATION DIRECT DEPUIS L'INTERFACE -->
+            <div id="secret-picker" class="secret-date-picker">
+                <label for="custom-date">Nouvelle cible :</label>
+                <input type="datetime-local" id="custom-date">
+                <button onclick="saveNewTargetDate()">Valider</button>
+                <button onclick="resetToDefaultDate()" style="background: rgba(239, 83, 80, 0.3);">Reset</button>
+            </div>
         </div>
 
         <!-- BLOC SIMULATEUR FINANCIER -->
@@ -454,14 +551,102 @@
     </div>
 
     <script>
-        const targetDate = new Date("August 7, 2026 00:00:01").getTime();
+        const DEFAULT_DATE_STR = "2026-08-07T00:01";
+        let targetDate;
+
+        // Formater proprement la date affichée sur le badge
+        function formatBadgeDate(dateString) {
+            const d = new Date(dateString);
+            if (isNaN(d.getTime())) return "--/--/----";
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const year = d.getFullYear();
+            const hours = String(d.getHours()).padStart(2, '0');
+            const minutes = String(d.getMinutes()).padStart(2, '0');
+            return `${day}/${month}/${year} à ${hours}h${minutes}`;
+        }
+
+        // Charger la date personnalisée depuis le localStorage ou utiliser celle par défaut
+        function initTargetDate() {
+            const savedDate = localStorage.getItem("quit_target_date");
+            if (savedDate) {
+                targetDate = new Date(savedDate).getTime();
+                document.getElementById("custom-date").value = savedDate;
+                document.getElementById("lbl-target-date").innerText = formatBadgeDate(savedDate);
+            } else {
+                targetDate = new Date("August 7, 2026 00:01:00").getTime();
+                document.getElementById("custom-date").value = DEFAULT_DATE_STR;
+                document.getElementById("lbl-target-date").innerText = formatBadgeDate(DEFAULT_DATE_STR);
+            }
+        }
+
+        function toggleSecretDatePicker() {
+            const picker = document.getElementById("secret-picker");
+            picker.style.display = (picker.style.display === "block") ? "none" : "block";
+        }
+
+        function saveNewTargetDate() {
+            const inputVal = document.getElementById("custom-date").value;
+            if (!inputVal) return;
+            localStorage.setItem("quit_target_date", inputVal);
+            targetDate = new Date(inputVal).getTime();
+            document.getElementById("lbl-target-date").innerText = formatBadgeDate(inputVal);
+            document.getElementById("secret-picker").style.display = "none";
+            updateCountdown();
+        }
+
+        function resetToDefaultDate() {
+            localStorage.removeItem("quit_target_date");
+            targetDate = new Date("August 7, 2026 00:01:00").getTime();
+            document.getElementById("custom-date").value = DEFAULT_DATE_STR;
+            document.getElementById("lbl-target-date").innerText = formatBadgeDate(DEFAULT_DATE_STR);
+            document.getElementById("secret-picker").style.display = "none";
+            updateCountdown();
+        }
+
         let currentSubstance = 'tabac'; 
+
+        // 31 Phrases d'encouragement
+        const dailyPhrases = [
+            "Chaque jour est une nouvelle victoire pour vos poumons. 🌱",
+            "Respirez profondément, appréciez cette clarté retrouvée. ✨",
+            "Votre corps vous remercie à chaque seconde de liberté. ❤️",
+            "Le plus beau chemin est celui que l'on trace ensemble. 🧭",
+            "Fiers du chemin parcouru, excités par celui à venir ! 🚀",
+            "Une bouffée d'air pur vaut mille fois mieux qu'une vieille habitude. 🌲",
+            "Le calme s'installe, votre esprit se libère. Vous gérez. 🧘",
+            "Regardez l'avenir droit dans les yeux, il est radieux. 🌅",
+            "Chaque pas, même petit, vous éloigne de la fumée. 👣",
+            "La persévérance est la clé de votre totale indépendance. 🔑",
+            "Sentez cette énergie neuve qui circule en vous. ⚡",
+            "L'air frais de la forêt est votre plus belle récompense. 🍃",
+            "Plus fort hier, encore plus solide aujourd'hui. 💪",
+            "Votre santé est un chef-d'œuvre en cours de création. 🎨",
+            "Un esprit libre dans un corps sain. Le bonheur commence ici. ☀️",
+            "Ensemble, aucun obstacle ne peut freiner notre élan. 🤝",
+            "Savourez le goût retrouvé de votre liberté retrouvée. 🍏",
+            "La clarté mentale est votre nouveau super-pouvoir. 🧠",
+            "Chaque matin sans produit est un cadeau que vous vous offrez. 🎁",
+            "La nature avance à son rythme, votre corps guérit de même. 🌊",
+            "Rien n'est plus puissant qu'une décision ferme et positive. ⭐",
+            "Prenez le temps de souffler... de la bonne manière ! 🌬️",
+            "Votre volonté est plus solide que n'importe quel rituel du passé. ⚓",
+            "Économies, santé, fierté : le trio gagnant de votre nouvelle vie. 💰",
+            "Laissez le passé derrière vous, l'horizon est grand ouvert. 🗺️",
+            "Votre endurance s'améliore minute après minute. Profitez-en ! 🏃",
+            "Le succès est la somme de petits choix répétés chaque jour. 🎯",
+            "Soyez fier de chaque impulsion surmontée avec succès. 🛡️",
+            "La vraie liberté, c'est de ne plus avoir besoin de se cacher. 🕊️",
+            "Une journée de clarté de plus, une victoire de plus pour l'équipe. 🏆",
+            "Le voyage est fluide, gardez le cap vers votre bien-être. ⛵"
+        ];
 
         const countdownSection = document.getElementById("countdown-section");
         const completeMessage = document.getElementById("complete-message");
         const menuBefore = document.getElementById("menu-before");
         const menuAfter = document.getElementById("menu-after");
         const financeSimulator = document.getElementById("finance-simulator");
+        const durationSummary = document.getElementById("duration-summary");
 
         const daysEl = document.getElementById("days");
         const hoursEl = document.getElementById("hours");
@@ -471,6 +656,14 @@
         const modal = document.getElementById("infoModal");
         const modalTitle = document.getElementById("modalTitle");
         const modalText = document.getElementById("modalText");
+
+        function openDiscord() {
+            const discordId = "1266344837976817737";
+            window.location.href = `discord://discord.com/channels/@me/${discordId}`;
+            setTimeout(() => {
+                window.open(`https://discord.com/channels/@me/${discordId}`, '_blank');
+            }, 500);
+        }
 
         function setSubstance(type) {
             currentSubstance = type;
@@ -496,23 +689,50 @@
             calculateSavings();
         }
 
+        function updateDailyPhrase() {
+            const today = new Date().getDate(); 
+            completeMessage.innerHTML = dailyPhrases[today - 1];
+        }
+
         function updateCountdown() {
             const now = new Date().getTime();
             const difference = targetDate - now;
 
+            // Si la date d'arrêt est passée (Sevrage en cours)
             if (difference < 0) {
                 countdownSection.style.display = "none";
                 completeMessage.style.display = "block";
                 menuBefore.style.display = "none";
                 menuAfter.style.display = "flex";
                 financeSimulator.style.display = "block";
+                
+                // Calcul et affichage de la durée globale écoulée
+                const timePassedMs = Math.abs(difference);
+                const totalMinutes = Math.floor(timePassedMs / (1000 * 60));
+                const totalHours = Math.floor(timePassedMs / (1000 * 60 * 60));
+                const totalDays = Math.floor(timePassedMs / (1000 * 60 * 60 * 24));
+
+                if (totalDays > 1) {
+                    durationSummary.innerText = `Soit ${totalDays} jours`;
+                } else if (totalHours >= 1) {
+                    durationSummary.innerText = `Soit ${totalHours} heure${totalHours > 1 ? 's' : ''}`;
+                } else {
+                    durationSummary.innerText = `Soit ${totalMinutes} minute${totalMinutes > 1 ? 's' : ''}`;
+                }
+                durationSummary.style.display = "block";
+
+                updateDailyPhrase(); 
                 calculateSavings();
                 return;
             }
 
+            // Si la date d'arrêt est dans le futur (Phase de préparation)
+            countdownSection.style.display = "block";
+            completeMessage.style.display = "none";
             menuBefore.style.display = "flex";
             menuAfter.style.display = "none";
             financeSimulator.style.display = "none";
+            durationSummary.style.display = "none"; // Masqué si pas démarré
 
             const days = Math.floor(difference / (1000 * 60 * 60 * 24));
             const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -538,11 +758,10 @@
             document.getElementById("savings-display").innerText = economise.toFixed(2) + " € économisés";
         }
 
-        // STRUCTURE DES BIENFAITS PAR PALIERS (EN JOURS SIMPLES POUR LE FILTRAGE DYNAMIQUE)
         const timelineData = {
             'tabac': [
-                { days: 0, timeLabel: "20 min à 24h", text: "Le rythme cardiaque se stabilise, le monoxyde de carbone est rejeté et les poumons commencent leur grand nettoyage." },
-                { days: 2, timeLabel: "48 heures", text: "La nicotine a totalement quitté le corps. Le goût et l'odorat redeviennent incroyablement précis." },
+                { days: 0, timeLabel: "20 min à 24h", text: "Le rythme cardiaque se stabile, le monoxyde de carbone est rejeté et les poumons commencent leur grand nettoyage." },
+                { days: 2, timeLabel: "48 heures", text: "La nicotine a totalement quitté le corps. Le goût et l'odorat redeviennent incroyablemente précis." },
                 { days: 14, timeLabel: "2 semaines", text: "La fonction pulmonaire remonte. Le sang circule mieux, les muscles fatiguent moins vite lors des efforts." },
                 { days: 21, timeLabel: "3 à 4 semaines", text: "Le sommeil profond se stabilise, la dépendance psychologique faiblit et les cils vibratiles se reconstruisent." },
                 { days: 45, timeLabel: "1 à 2 mois", text: "La toux de nettoyage disparaît complètement. La voix est plus claire, le teint est lumineux et les économies explosent." },
@@ -561,7 +780,7 @@
             'tabac': {
                 'prep': {
                     title: "🌱 Se préparer à arrêter le Tabac",
-                    text: `<p>Un sevrage bien planifié augmente considérablement la réussite de l'équipe. Voici la feuille de route d'ici le 7 août :</p>
+                    text: `<p>Un sevrage bien planifié augmente considérablement la réussite de l'équipe. Voici la feuille de route :</p>
                            <ul>
                                <li><b>Listez vos piliers de motivation :</b> Notez-les précisément (liberté, souffle retrouvé, économies).</li>
                                <li><b>Réfléchissez aux outils d'aide :</b> Évaluez si vous aurez besoin de substituts nicotiniques (patchs, gommes, sprays) pour atténuer le manque physique du matin.</li>
@@ -610,7 +829,7 @@
             'cannabis': {
                 'prep': {
                     title: "🌱 Se préparer à arrêter le Cannabis",
-                    text: `<p>L'arrêt du cannabis est une démarche libératrice pour l'esprit et la clarté mentale. Voici comment vous organiser collectivement d'ici le 7 août :</p>
+                    text: `<p>L'arrêt du cannabis est une démarche libératrice pour l'esprit et la clarté mentale. Voici comment vous organiser collectivement :</p>
                            <ul>
                                <li><b>Listez les motivations profondes :</b> Retrouver de l'énergie, de la mémoire, un meilleur sommeil à terme, ou cesser de dépendre d'un produit. Affichez ces raisons bien en vue.</li>
                                <li><b>Identifiez les rituels de consommation :</b> S'agit-il du joint du soir pour dormir ? De celui du week-end entre amis ? Repérer ces moments clés permet de planifier des activités de substitution.</li>
@@ -620,7 +839,7 @@
                 },
                 'jour-j': {
                     title: "🚀 Préparer le Jour J (Cannabis)",
-                    text: `<p>Quand le compte à rebours touchera à sa fin, vous entamerez votre première journée de totale clarté d'esprit. Voici ce qu'il faudra appliquer concrètement :</p>
+                    text: `<p>Quand le compte à rebours touchera à sa fin, vous entamerez votre première journée de totale clarté d'esprit. Voici ce qu'il faudra appliquer concrètent :</p>
                            <ul>
                                <li><b>Repenser la fin de journée :</b> Pour le premier soir, n'attendez pas l'heure habituelle de consommation sur votre canapé. Changez de configuration : sortez faire une marche, cuisinez une recette complexe ou lancez une session de jeu interactive en ligne avec vos amis du défi.</li>
                                <li><b>Anticiper le sommeil :</b> Les premières nuits peuvent être agitées, avec des rêves très intenses (le cerveau récupère son sommeil paradoxal). Préparez des tisanes relaxantes (camomille, valériane) et lisez un livre loin des écrans avant de dormir.</li>
@@ -656,7 +875,6 @@
             }
         };
 
-        // OUVERTURE DYNAMIQUE DE LA FENÊTRE CHRONOLOGIQUE FILTRÉE
         function openBenefitsModal() {
             const now = new Date().getTime();
             const timePassedMs = now - targetDate;
@@ -668,7 +886,6 @@
                 modalTitle.className = "modal-title cannabis-theme";
             }
 
-            // CAS 1 : LA DATE D'ARRÊT N'EST PAS ENCORE PASSÉE (PHASE DE PRÉPARATION)
             if (timePassedMs < 0) {
                 modalText.innerHTML = `
                     <div class="big-benefit-display">
@@ -681,11 +898,8 @@
                 return;
             }
 
-            // CAS 2 : LE SEVRAGE A COMMENCÉ (AFFICHAGE FILTRÉ COHÉRENT)
             const joursEcoules = Math.floor(timePassedMs / (1000 * 60 * 60 * 24));
             const itemsSubstance = timelineData[currentSubstance];
-            
-            // Filtrer pour ne garder que les paliers <= au nombre de jours réels
             const itemsAtteints = itemsSubstance.filter(item => item.days <= joursEcoules);
 
             let htmlChronologie = "";
@@ -708,7 +922,6 @@
                 
                 htmlChronologie += `</div>`;
                 
-                // Si tous les paliers ne sont pas encore affichés, petit indicateur discret de progression
                 if (itemsAtteints.length < itemsSubstance.length) {
                     htmlChronologie += `<p style="margin-top: 25px; font-style: italic; opacity: 0.6; text-align: center;">🌱 D'autres bienfaits invisibles continuent de se préparer en arrière-plan...</p>`;
                 }
@@ -718,7 +931,6 @@
             modal.style.display = "flex";
         }
 
-        // ALGORITHME DES BIENFAITS ACQUIS EN DIRECT POUR LES ALERTES URGENTES
         function getLiveBenefitSummary(substance, jours, isCraquage) {
             let resume = "";
             const prefixe = isCraquage 
@@ -727,7 +939,7 @@
 
             if (substance === 'tabac') {
                 if (jours === 0) resume = "Ton rythme cardiaque s'est déjà restabilisé et tes poumons rejettent les premières impuretés. Ne gâche pas ce superbe élan initial !";
-                else if (jours === 1) resume = "Le monoxyde de carbone toxique a été entièrement purgé de ton sang. Tes muscles et tes organes respirent enfin ! C'est trop tôt pour faire demi-tour.";
+                else if (jours === 1) resume = "Le monoxyde de carbone toxique a été entièrement purgé de ton sang. Tes muscles et tes organes respirent enfin ! C'est trop tôt pour faire demi-turn.";
                 else if (jours === 2) resume = "La nicotine a totalement quitté ton corps et tes sens du goût et de l'odorat sont en train de renaître. Ta liberté est à portée de main !";
                 else if (jours <= 5) resume = "Tes bronches ont commencé à se détendre et ton souffle s'ameliore à vue d'œil. Ton corps fait un effort titanesque, soutiens-le !";
                 else if (jours <= 14) resume = "Ta circulation sanguine s'est nettement dynamisée et ton teint est redevenu éclatant. La dépendance physique est derrière toi, tiens bon !";
@@ -764,14 +976,14 @@
                 else if (joursCoules <= 14) message = "🩸 <b>Semaine 2 :</b> Votre circulation sanguine générale s'est redynamisée. Votre teint est plus éclatant et moins fatigué.";
                 else if (joursCoules <= 21) message = "🧘 <b>Semaine 3 :</b> La dépendance physique s'effondre. Les neurotransmetteurs de votre cerveau réapprennent à vivre sereinement sans nicotine.";
                 else if (joursCoules <= 30) message = "🛡️ <b>Mois 1 :</b> Un mois entier ! Vos cils bronchiques se sont reconstruits et nettoient activement vos poumons des impuretés historiques.";
-                else if (joursCoules <= 60) message = "💪 <b>Mois 2 :</b> La toux de nettoyage s'est tue. Vos cordes vocales se portent mieux, votre souffle est puissant et vos économies sont colossales !";
+                else if (joursCoules <= 60) message = "💪 <b>Mois 2 :</b> La toux de nettoyage s'est tue. Vos cordes vocales se portent mieux, votre souffle s'est renforcé et vos économies sont colossales !";
                 else if (joursCoules <= 90) message = "⚡ <b>Mois 3 :</b> Votre capacité respiratoire s'est accrue de près de 30% ! Vos poumons ont retrouvé une force de défense et d'oxygénation hors norme.";
                 else message = "🏆 <b>Plus de 3 mois de liberté totale !</b> Votre risque de maladie cardiaque a diminué de moitié. Vous avez ancré une habitude de vie saine et durable. L'équipe est fière de vous !";
             } else {
                 modalTitle.innerText = "⭐ Votre Bienfait du Jour (Cannabis)";
                 modalTitle.className = "modal-title cannabis-theme";
 
-                if (joursCoules === 0) message = "✨ <b>Le changement commence !</b> Votre système respiratoire et cardiaque fait une pause salvatrice immédiate.";
+                if (joursCoules === 0) message = "✨ <b>Le changement commence !</b> Votre système respiratoire fait une pause salvatrice immédiate.";
                 else if (joursCoules <= 2) message = "🧠 <b>Jour " + joursCoules + " :</b> Votre vigilance se réveille. Le cerveau commence à éliminer le voile pour laisser place à une pensée claire.";
                 else if (joursCoules <= 6) message = "🛌 <b>Jour " + joursCoules + " :</b> Votre sommeil se structure. Votre cerveau récupère son précieux sommeil paradoxal. Vos nuits redeviennent enfin réparatrices !";
                 else if (joursCoules <= 14) message = "📚 <b>Semaine 2 :</b> Votre mémoire à court terme et votre vivacité intellectuelle font un bond en avant impressionnant.";
@@ -786,7 +998,6 @@
             modal.style.display = "flex";
         }
 
-        // POPUP AGENT IA ET CONFIGURATION DU PROMPT EXPERT
         function openAIModal() {
             modalTitle.innerText = "🤖 Mon Agent IA de poche";
             modalTitle.className = "modal-title ai-theme";
@@ -798,13 +1009,13 @@
             if(timePassedMs < 0) {
                 const diff = targetDate - now;
                 const joursRestants = Math.ceil(diff / (1000 * 60 * 60 * 24));
-                precisionSevrage = `L'utilisateur est en phase de préparation active. Son grand départ (Jour J) est planifié dans exactement ${joursRestants} jours (le 7 août 2026).`;
+                precisionSevrage = `L'utilisateur est en phase de préparation active. Son grand départ (Jour J) est configuré dans ${joursRestants} jours.`;
             } else {
                 const joursPasses = Math.floor(timePassedMs / (1000 * 60 * 60 * 24));
-                precisionSevrage = `L'utilisateur a arrêté sa consommation il y a maintenant ${joursPasses} jours (depuis le 7 août 2026).`;
+                precisionSevrage = `L'utilisateur a arrêté sa consommation il y a maintenant ${joursPasses} jours.`;
             }
 
-            const systemPrompt = `Tu es un expert en addictologie, psychologie comportementale et un coach de sevrage ultra-bienveillant. Tu accompagnes un utilisateur engagé dans un défi d'arrêt du produit suivant : [${currentSubstance.toUpperCase()}].
+            const systemPrompt = `Tu es un expert en addictologie, psychologie comportementale et un coach de sevrage ultra-bienveillant. Tu accompagne un utilisateur engagé dans un défi d'arrêt du produit suivant : [${currentSubstance.toUpperCase()}].
 
 CONTEXTE ACTUEL :
 - ${precisionSevrage}
@@ -818,7 +1029,7 @@ TES LIGNES DIRECTRICES POUR LA CONVERSATION :
    - Utilise une communication chaleureuse, empathique, ancrée et encourageante. Parle d'égal à égal, comme un guide de confiance ou un pair-aidant aguerri.
 
 2. CONNAISSANCES TECHNIQUES À UTILISER :
-   - Si [TABAC] : Connaissances aiguës sur les pics de manque (vagues de 3-5 min), l'utilité des substituts nicotiniques, les mécanismes réflexes comportementaux (brossage de dent, hydratation) et le nettoyage biologique des poumons.
+   - Si [TABAC] : Connaissances aiguës sur les pics de manque (vagues de 3-5 min), l'utilité des substituts nicotiniques, les rituels comportementaux (brossage de dent, hydratation) et le nettoyage biologique des poumons.
    - Si [CANNABIS] : Connaissances sur la gestion du sommeil paradoxal (rêves intenses au début), le retour de la clarté mentale, le métabolisme de déstockage du THC dans les graisses (1 mois) et la recalibration de la dopamine via des activités gratifiantes (sport, tâches cognitives).
 
 3. FORMAT DES RÉPONSES :
@@ -838,7 +1049,7 @@ Dis bonjour chaleureusement à l'utilisateur, demande-lui comment se passe sa jo
         function copyPrompt() {
             const promptBox = document.getElementById("promptBox");
             promptBox.select();
-            promptBox.setSelectionRange(0, 99999); // Pour mobiles
+            promptBox.setSelectionRange(0, 99999);
 
             navigator.clipboard.writeText(promptBox.value).then(() => {
                 const btnText = document.getElementById("copyBtnText");
@@ -892,9 +1103,12 @@ Dis bonjour chaleureusement à l'utilisateur, demande-lui comment se passe sa jo
             }
         }
 
+        // Initialisation de la date cible avant de lancer la boucle
+        initTargetDate();
+
         const intervalId = setInterval(() => {
             updateCountdown();
-            if(countdownSection.style.display === "none") {
+            if(document.getElementById("countdown-section").style.display === "none") {
                 calculateSavings();
             }
         }, 1000);

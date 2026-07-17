@@ -430,7 +430,7 @@
         </div>
 
         <div class="menu-container">
-            <button class="btn" onclick="openModal('bienfaits')">📈 Évolution globale des bienfaits (3 Mois)</button>
+            <button class="btn" onclick="openBenefitsModal()">📈 Évolution globale des bienfaits</button>
             
             <div id="menu-before">
                 <button class="btn" onclick="openModal('prep')">🌱 Se préparer à arrêter</button>
@@ -454,7 +454,7 @@
     </div>
 
     <script>
-        const targetDate = new Date("August 7, 2026 00:01:00").getTime();
+        const targetDate = new Date("August 7, 2026 00:00:01").getTime();
         let currentSubstance = 'tabac'; 
 
         const countdownSection = document.getElementById("countdown-section");
@@ -467,6 +467,10 @@
         const hoursEl = document.getElementById("hours");
         const minutesEl = document.getElementById("minutes");
         const secondsEl = document.getElementById("seconds");
+
+        const modal = document.getElementById("infoModal");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalText = document.getElementById("modalText");
 
         function setSubstance(type) {
             currentSubstance = type;
@@ -534,16 +538,34 @@
             document.getElementById("savings-display").innerText = economise.toFixed(2) + " € économisés";
         }
 
-        // TEXTES DE CONSEILS GENERAUX
+        // STRUCTURE DES BIENFAITS PAR PALIERS (EN JOURS SIMPLES POUR LE FILTRAGE DYNAMIQUE)
+        const timelineData = {
+            'tabac': [
+                { days: 0, timeLabel: "20 min à 24h", text: "Le rythme cardiaque se stabilise, le monoxyde de carbone est rejeté et les poumons commencent leur grand nettoyage." },
+                { days: 2, timeLabel: "48 heures", text: "La nicotine a totalement quitté le corps. Le goût et l'odorat redeviennent incroyablement précis." },
+                { days: 14, timeLabel: "2 semaines", text: "La fonction pulmonaire remonte. Le sang circule mieux, les muscles fatiguent moins vite lors des efforts." },
+                { days: 21, timeLabel: "3 à 4 semaines", text: "Le sommeil profond se stabilise, la dépendance psychologique faiblit et les cils vibratiles se reconstruisent." },
+                { days: 45, timeLabel: "1 à 2 mois", text: "La toux de nettoyage disparaît complètement. La voix est plus claire, le teint est lumineux et les économies explosent." },
+                { days: 90, timeLabel: "3 mois", text: "Votre capacité respiratoire s'est accrue de près de 30%. Le risque de crise cardiaque a déjà diminué de moitié. Vous êtes solidement ancré dans votre liberté." }
+            ],
+            'cannabis': [
+                { days: 0, timeLabel: "Jour 1 à 3", text: "Élimination complète du monoxyde de carbone. Le brouillard mental matinal commence à se dissiper, la concentration revient." },
+                { days: 7, timeLabel: "1 semaine", text: "Le sommeil paradoxal se restructure. Les rêves deviennent extrêmement vivants et le sommeil est enfin réparateur." },
+                { days: 14, timeLabel: "2 à 3 semaines", text: "La mémoire à court terme redevient hautement performante. La motivation naturelle (production de dopamine) se rééquilibre." },
+                { days: 30, timeLabel: "1 mois", text: "Le THC accumulé dans les tissus adipeux est en très grande partie évacué. L'anxiété ou l'irritabilité du sevrage disparaissent complètement." },
+                { days: 60, timeLabel: "2 à 3 mois", text: "Vos récepteurs cérébraux ont retrouvé leur état initial stable. Votre énergie, votre niveau de créativité et votre réactivité cognitive sont à leur maximum de potentiel. Vous êtes totalement libre." }
+            ]
+        };
+
         const contentData = {
             'tabac': {
                 'prep': {
                     title: "🌱 Se préparer à arrêter le Tabac",
                     text: `<p>Un sevrage bien planifié augmente considérablement la réussite de l'équipe. Voici la feuille de route d'ici le 7 août :</p>
                            <ul>
-                               <li><b>Listez vos piliers de motivation :</b> Notez-les précisément (liberté, souffle retrouvé, économies). Partagez votre liste sur votre fil de discussion.</li>
+                               <li><b>Listez vos piliers de motivation :</b> Notez-les précisément (liberté, souffle retrouvé, économies).</li>
                                <li><b>Réfléchissez aux outils d'aide :</b> Évaluez si vous aurez besoin de substituts nicotiniques (patchs, gommes, sprays) pour atténuer le manque physique du matin.</li>
-                               <li><b>Cartographiez vos habitudes :</b> Notez les cigarettes les plus rituelles (après le repas, avec le café, en voiture) afin de prévoir une alternative pour chacune d'elles.</li>
+                               <li><b>Cartographiez vos habitudes :</b> Notez les cigarettes les plus rituelles afin de prévoir une alternative pour chacune d'elles.</li>
                                <li><b>Faites place nette :</b> La veille de la date fatidique, débarrassez-vous de l'intégralité de vos paquets, cendriers et briquets.</li>
                            </ul>`
                 },
@@ -583,17 +605,6 @@
                                <li><b>Décrypter la situation :</b> Que s'est-il passé ? Était-ce dû à un pic de stress, à l'alcool, à de la fatigue ? Identifiez ce déclencheur pour adapter votre bouclier la prochaine fois.</li>
                                <li><b>Revenez dans la course :</b> Prévenez le groupe en toute franchise, le soutien mutuel sert exactement à cela. On se remobilise !</li>
                            </ul>`
-                },
-                'bienfaits': {
-                    title: "📈 Chronologie globale des bienfaits (3 Mois de pureté)",
-                    text: `<div class="timeline">
-                               <div class="timeline-item"><span class="timeline-time">20 min à 24h :</span><p>Le rythme cardiaque se stabilise, le monoxyde de carbone est rejeté et les poumons commencent leur grand nettoyage.</p></div>
-                               <div class="timeline-item"><span class="timeline-time">48 heures :</span><p>La nicotine a totalement quitté le corps. Le goût et l'odorat redeviennent incroyablement précis.</p></div>
-                               <div class="timeline-item"><span class="timeline-time">2 semaines :</span><p>La fonction pulmonaire remonte. Le sang circule mieux, les muscles fatiguent moins vite lors des efforts.</p></div>
-                               <div class="timeline-item"><span class="timeline-time">3 à 4 semaines :</span><p>Le sommeil profond se stabilise, la dépendance psychologique faiblit et les cils vibratiles se reconstruisent.</p></div>
-                               <div class="timeline-item"><span class="timeline-time">1 à 2 mois :</span><p>La toux de nettoyage disparaît complètement. La voix est plus claire, le teint est lumineux et les économies explosent.</p></div>
-                               <div class="timeline-item"><span class="timeline-time">3 mois :</span><p>Votre capacité respiratoire s'est accrue de près de 30%. Le risque de crise cardiaque a déjà diminué de moitié. Vous êtes solidement ancré dans votre liberté.</p></div>
-                           </div>`
                 }
             },
             'cannabis': {
@@ -641,19 +652,71 @@
                                <li><b>Arrêter immédiatement les frais :</b> Ce n'est pas parce que vous avez fait un faux pas que votre démarche globale est annulée. Jetez ce qu'il reste sur le moment.</li>
                                <li><b>Comprendre pour mieux anticiper :</b> Quelle a été la faille ? Ennui, insomnie, contrariété sociale ? Trouver la cause permet de concevoir une meilleure parade pour la suite.</li>
                            </ul>`
-                },
-                'bienfaits': {
-                    title: "📈 Chronologie globale des bienfaits (3 Mois de clarté)",
-                    text: `<div class="timeline">
-                               <div class="timeline-item"><span class="timeline-time cannabis-theme">Jour 1 à 3 :</span><p>Élimination complète du monoxyde de carbone. Le brouillard mental matinal commence à se dissiper, la concentration revient.</p></div>
-                               <div class="timeline-item"><span class="timeline-time cannabis-theme">1 semaine :</span><p>Le sommeil paradoxal se restructure. Les rêves deviennent extrêmement vivants et le sommeil est enfin réparateur.</p></div>
-                               <div class="timeline-item"><span class="timeline-time cannabis-theme">2 à 3 semaines :</span><p>La mémoire à court terme redeviennent hautement performante. La motivation naturelle (production de dopamine) se rééquilibre.</p></div>
-                               <div class="timeline-item"><span class="timeline-time cannabis-theme">1 mois :</span><p>Le THC accumulé dans les tissus adipeux est en très grande partie évacué. L'anxiété ou l'irritabilité du sevrage disparaissent complètement.</p></div>
-                               <div class="timeline-item"><span class="timeline-time cannabis-theme">2 à 3 mois :</span><p>Vos récepteurs cérébraux ont retrouvé leur état initial stable. Votre énergie, votre niveau de créativité et votre réactivité cognitive sont à leur maximum de potentiel. Vous êtes totalement libre.</p></div>
-                           </div>`
                 }
             }
         };
+
+        // OUVERTURE DYNAMIQUE DE LA FENÊTRE CHRONOLOGIQUE FILTRÉE
+        function openBenefitsModal() {
+            const now = new Date().getTime();
+            const timePassedMs = now - targetDate;
+            
+            modalTitle.innerText = "📈 Évolution globale de tes bienfaits";
+            if (currentSubstance === 'tabac') {
+                modalTitle.className = "modal-title tabac-theme";
+            } else {
+                modalTitle.className = "modal-title cannabis-theme";
+            }
+
+            // CAS 1 : LA DATE D'ARRÊT N'EST PAS ENCORE PASSÉE (PHASE DE PRÉPARATION)
+            if (timePassedMs < 0) {
+                modalText.innerHTML = `
+                    <div class="big-benefit-display">
+                        🌱 <b>Félicitations pour cette superbe démarche !</b><br><br>
+                        Le simple fait d'être ici et de suivre ce compte à rebours prouve ta détermination. Tu te prépares activement à offrir à ton corps et à ton esprit le plus beau des cadeaux. 
+                        Reste connecté à cette motivation, l'équipe est à tes côtés pour le grand départ à venir. Tu vas assurer ! 🚀
+                    </div>
+                `;
+                modal.style.display = "flex";
+                return;
+            }
+
+            // CAS 2 : LE SEVRAGE A COMMENCÉ (AFFICHAGE FILTRÉ COHÉRENT)
+            const joursEcoules = Math.floor(timePassedMs / (1000 * 60 * 60 * 24));
+            const itemsSubstance = timelineData[currentSubstance];
+            
+            // Filtrer pour ne garder que les paliers <= au nombre de jours réels
+            const itemsAtteints = itemsSubstance.filter(item => item.days <= joursEcoules);
+
+            let htmlChronologie = "";
+            
+            if (itemsAtteints.length === 0) {
+                htmlChronologie = `<p class="big-benefit-display">⏱️ Le sevrage vient tout juste de commencer ! Reviens très vite pour voir tes premiers paliers se débloquer ici.</p>`;
+            } else {
+                htmlChronologie = `<p style="margin-bottom: 20px;">💪 <b>En déjà ${joursEcoules} jour(s) de liberté, voici les transformations ancrées dans ton corps :</b></p>`;
+                htmlChronologie += `<div class="timeline">`;
+                
+                itemsAtteints.forEach(item => {
+                    const themeClasse = currentSubstance === 'cannabis' ? 'timeline-time cannabis-theme' : 'timeline-time';
+                    htmlChronologie += `
+                        <div class="timeline-item">
+                            <span class="${themeClasse}">${item.timeLabel} :</span>
+                            <p>${item.text}</p>
+                        </div>
+                    `;
+                });
+                
+                htmlChronologie += `</div>`;
+                
+                // Si tous les paliers ne sont pas encore affichés, petit indicateur discret de progression
+                if (itemsAtteints.length < itemsSubstance.length) {
+                    htmlChronologie += `<p style="margin-top: 25px; font-style: italic; opacity: 0.6; text-align: center;">🌱 D'autres bienfaits invisibles continuent de se préparer en arrière-plan...</p>`;
+                }
+            }
+
+            modalText.innerHTML = htmlChronologie;
+            modal.style.display = "flex";
+        }
 
         // ALGORITHME DES BIENFAITS ACQUIS EN DIRECT POUR LES ALERTES URGENTES
         function getLiveBenefitSummary(substance, jours, isCraquage) {
@@ -666,7 +729,7 @@
                 if (jours === 0) resume = "Ton rythme cardiaque s'est déjà restabilisé et tes poumons rejettent les premières impuretés. Ne gâche pas ce superbe élan initial !";
                 else if (jours === 1) resume = "Le monoxyde de carbone toxique a été entièrement purgé de ton sang. Tes muscles et tes organes respirent enfin ! C'est trop tôt pour faire demi-tour.";
                 else if (jours === 2) resume = "La nicotine a totalement quitté ton corps et tes sens du goût et de l'odorat sont en train de renaître. Ta liberté est à portée de main !";
-                else if (jours <= 5) resume = "Tes bronches ont commencé à se détendre et ton souffle s'améliore à vue d'œil. Ton corps fait un effort titanesque, soutiens-le !";
+                else if (jours <= 5) resume = "Tes bronches ont commencé à se détendre et ton souffle s'ameliore à vue d'œil. Ton corps fait un effort titanesque, soutiens-le !";
                 else if (jours <= 14) resume = "Ta circulation sanguine s'est nettement dynamisée et ton teint est redevenu éclatant. La dépendance physique est derrière toi, tiens bon !";
                 else if (jours <= 30) resume = "Un mois d'efforts ! Les cils de tes poumons se sont reconstruits et les nettoient activement heure par heure. Ne laisse pas une bouffée balayer tout ce travail.";
                 else if (jours <= 60) resume = "Plus d'un mois sans tabac ! Ta toux chronique est finie, ta voix est plus nette et ton souffle est puissant. Regarde aussi la somme astronomique économisée !";
@@ -741,7 +804,6 @@
                 precisionSevrage = `L'utilisateur a arrêté sa consommation il y a maintenant ${joursPasses} jours (depuis le 7 août 2026).`;
             }
 
-            // Génération du Prompt Système ultra-optimisé
             const systemPrompt = `Tu es un expert en addictologie, psychologie comportementale et un coach de sevrage ultra-bienveillant. Tu accompagnes un utilisateur engagé dans un défi d'arrêt du produit suivant : [${currentSubstance.toUpperCase()}].
 
 CONTEXTE ACTUEL :
@@ -799,7 +861,6 @@ Dis bonjour chaleureusement à l'utilisateur, demande-lui comment se passe sa jo
             const now = new Date().getTime();
             const timePassedMs = now - targetDate;
 
-            // Si le compteur a commencé (post-arrêt), on injecte le rappel dynamique dans les cas d'urgence
             if (timePassedMs > 0 && (key === 'craquer' || key === 'craque')) {
                 const joursCoules = Math.floor(timePassedMs / (1000 * 60 * 60 * 24));
                 const estUnCraquageDejàFait = (key === 'craque');
@@ -810,7 +871,6 @@ Dis bonjour chaleureusement à l'utilisateur, demande-lui comment se passe sa jo
                 finalHtml += `<div class="${styleClasse}">${rappelTexte}</div>`;
             }
 
-            // Ajout du contenu textuel standard de la modale
             finalHtml += data.text;
             modalText.innerHTML = finalHtml;
             

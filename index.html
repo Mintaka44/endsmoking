@@ -132,7 +132,6 @@
             margin-top: 1rem;
         }
 
-        /* Groupes de boutons masqués/affichés par le JS */
         #menu-before, #menu-after {
             display: none;
             flex-direction: column;
@@ -159,87 +158,89 @@
             transform: scale(1.01);
         }
 
-        /* Boutons d'urgence (Aide) stylisés différemment */
-        .btn-panic {
-            background: rgba(239, 83, 80, 0.25);
-            border-color: rgba(239, 83, 80, 0.4);
-        }
-        .btn-panic:hover {
-            background: rgba(239, 83, 80, 0.4);
-            border-color: rgba(239, 83, 80, 0.6);
-        }
+        .btn-panic { background: rgba(239, 83, 80, 0.25); border-color: rgba(239, 83, 80, 0.4); }
+        .btn-panic:hover { background: rgba(239, 83, 80, 0.4); border-color: rgba(239, 83, 80, 0.6); }
 
-        .btn-relapse {
-            background: rgba(255, 167, 38, 0.2);
-            border-color: rgba(255, 167, 38, 0.35);
-        }
-        .btn-relapse:hover {
-            background: rgba(255, 167, 38, 0.35);
-            border-color: rgba(255, 167, 38, 0.5);
-        }
+        .btn-relapse { background: rgba(255, 167, 38, 0.2); border-color: rgba(255, 167, 38, 0.35); }
+        .btn-relapse:hover { background: rgba(255, 167, 38, 0.35); border-color: rgba(255, 167, 38, 0.5); }
 
-        /* --- FENÊTRE MODALE (POP-UP CONTENT) --- */
+        /* --- FENÊTRE MODALE PLUS GRANDE --- */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             z-index: 10;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 30px;
         }
 
         .modal-content {
-            background: rgba(25, 35, 45, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 2.5rem 2rem;
-            border-radius: 24px;
-            max-width: 550px;
+            background: rgba(20, 30, 40, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 3rem;
+            border-radius: 28px;
+            max-width: 850px; /* Agrandissement significatif */
             width: 100%;
-            max-height: 80vh;
+            max-height: 85vh;
             overflow-y: auto;
             position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            animation: fadeIn 0.3s ease-out;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+            animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .close-modal {
             position: absolute;
-            top: 15px; right: 20px;
-            font-size: 1.8rem;
+            top: 20px; right: 25px;
+            font-size: 2.2rem;
             cursor: pointer;
-            opacity: 0.6;
+            opacity: 0.5;
             transition: opacity 0.2s;
         }
         .close-modal:hover { opacity: 1; }
 
         .modal-title {
-            font-size: 1.6rem;
-            margin-bottom: 1.2rem;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
             color: #4dd0e1;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
         }
 
         .modal-text {
             font-size: 1.05rem;
-            line-height: 1.6;
+            line-height: 1.7;
             text-align: left;
-            opacity: 0.9;
+            opacity: 0.95;
+        }
+
+        .modal-text p {
+            margin-bottom: 15px;
         }
 
         .modal-text ul {
-            margin-left: 20px;
+            margin-left: 22px;
             margin-top: 10px;
+            margin-bottom: 20px;
         }
         .modal-text li {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .highlight-box {
+            background: rgba(77, 208, 225, 0.1);
+            border-left: 4px solid #4dd0e1;
+            padding: 15px;
+            border-radius: 0 12px 12px 0;
+            margin: 20px 0;
         }
 
         /* Responsive */
@@ -248,6 +249,7 @@
             .number { font-size: 2.2rem; }
             .countdown-grid { gap: 8px; }
             .time-box { padding: 1rem 0.2rem; }
+            .modal-content { padding: 1.5rem; }
         }
     </style>
 </head>
@@ -256,7 +258,6 @@
     <div class="container">
         <h1>Le Grand Départ 🚭</h1>
         
-        <!-- Compte à rebours actif -->
         <div id="countdown-section">
             <p class="subtitle">Libres, ensemble et à pleins poumons. Le décompte :</p>
             <div id="countdown" class="countdown-grid">
@@ -267,20 +268,15 @@
             </div>
         </div>
 
-        <!-- Message affiché le jour J -->
         <div id="complete-message">
             C'est le moment ! Respirez l'air pur de la forêt. 🌱
         </div>
 
-        <!-- MENU DE BOUTONS DYNAMIQUE -->
         <div class="menu-container">
-            <!-- Boutons AVANT la date d'arrêt -->
             <div id="menu-before">
                 <button class="btn" onclick="openModal('prep')">🌱 Se préparer à arrêter</button>
                 <button class="btn" onclick="openModal('jour-j')">🚀 Le jour J : Mode d'emploi</button>
             </div>
-
-            <!-- Boutons APRÈS la date d'arrêt -->
             <div id="menu-after">
                 <button class="btn" onclick="openModal('astuces')">✨ Astuces pour tenir</button>
                 <button class="btn btn-panic" onclick="openModal('craquer')">🚨 HEEELP, je vais craquer !</button>
@@ -289,7 +285,6 @@
         </div>
     </div>
 
-    <!-- FENÊTRE MODALE UNIQUE -->
     <div id="infoModal" class="modal" onclick="closeModalOutside(event)">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">&times;</span>
@@ -299,9 +294,7 @@
     </div>
 
     <script>
-        // --- CONFIGURATION DE VOTRE DATE D'ARRÊT ---
         const targetDate = new Date("August 7, 2026 00:01:00").getTime();
-        // -------------------------------------------
 
         const countdownSection = document.getElementById("countdown-section");
         const completeMessage = document.getElementById("complete-message");
@@ -317,20 +310,16 @@
             const now = new Date().getTime();
             const difference = targetDate - now;
 
-            // SI LA DATE EST ATTEINTE OU DÉPASSÉE
             if (difference < 0) {
                 countdownSection.style.display = "none";
                 completeMessage.style.display = "block";
-                
                 menuBefore.style.display = "none";
-                menuAfter.style.display = "flex"; // Affiche les outils de maintien
-                
+                menuAfter.style.display = "flex";
                 clearInterval(intervalId);
                 return;
             }
 
-            // AVANT LA DATE
-            menuBefore.style.display = "flex"; // Affiche la préparation
+            menuBefore.style.display = "flex";
             menuAfter.style.display = "none";
 
             const days = Math.floor(difference / (1000 * 60 * 60 * 24));
@@ -344,31 +333,67 @@
             secondsEl.innerText = seconds < 10 ? "0" + seconds : seconds;
         }
 
-        // TEXTES DES SECTIONS DU MENU
+        // TEXTES STRUCTURÉS SELON LES CONSEILS OFFICIELS DE TABAC INFO SERVICE
         const contentData = {
             'prep': {
-                title: "🌱 Se préparer à arrêter",
-                text: "L'union fait la force. Voici vos devoirs d'équipe d'ici le 7 août :<br><ul><li><b>Listez vos déclencheurs :</b> Le café ? Le stress ? Identifiez-les pour mieux les esquiver.</li><li><b>Nettoyez l'espace :</b> Jetez briquets, cendriers restants et paquets vides. Ne laissez rien traîner.</li><li><b>Changez vos habitudes :</b> Modifiez l'ordre de votre routine matinale.</li><li><b>Parlez-en :</b> Rappelez-vous chaque jour en groupe pourquoi vous faites ça.</li></ul>"
+                title: "🌱 Se préparer à arrêter (Conseils Tabac Info Service)",
+                text: `<p>Un arrêt bien préparé multiplie drastiquement vos chances de réussite. D'ici le 7 août, travaillez votre stratégie en équipe :</p>
+                       <ul>
+                           <li><b>Faites le point sur vos motivations :</b> Notez-les par écrit (santé, budget, liberté). Relisez-les ensemble lorsque vous doutez.</li>
+                           <li><b>Évaluez votre dépendance :</b> Si vous fumez dès le réveil, une béquille (substituts nicotiniques comme les patchs ou gommes) peut être votre meilleure alliée. N'hésitez pas à consulter un professionnel de santé.</li>
+                           <li><b>Identifiez vos habitudes et automatismes :</b> Repérez à quelles situations ou émotions chaque cigarette est associée (stress, café, alcool, ennui) pour planifier à l'avance des comportements de remplacement.</li>
+                           <li><b>Éliminez la tentation :</b> Jetez absolument tout ce qui rappelle le tabac (paquets, briquets, cendriers) pour que votre environnement devienne une zone saine de respiration.</li>
+                       </ul>`
             },
             'jour-j': {
                 title: "🚀 Le jour J : Mode d'emploi",
-                text: "Aujourd'hui, le compteur passe à zéro. Pas de panique, vivez-le une heure après l'autre :<br><ul><li><b>Le premier matin :</b> Remplacez la cigarette du matin par un grand verre d'eau fraîche ou une douche tonifiante.</li><li><b>Occupez vos mains :</b> Prenez un stylo, une balle anti-stress ou cuisinez.</li><li><b>Célébrez en équipe :</b> Envoyez un message sur votre groupe dès que vous passez une étape (matinée faite, premier repas fait...).</li></ul>"
+                text: `<p>Aujourd'hui, c'est le grand saut. Pas besoin de penser aux mois à venir, concentrez-vous uniquement sur **les prochaines 24 heures** :</p>
+                       <ul>
+                           <li><b>Modifiez votre routine :</b> Rompez immédiatement vos rituels du matin. Prenez votre petit-déjeuner dans une autre pièce, buvez un thé plutôt qu'un café, ou brossez-vous les dents directement après le repas.</li>
+                           <li><b>Anticipez les symptômes de sevrage :</b> L'irritabilité, la fatigue ou la toux sont des réactions normales de votre corps qui se purifie. Ils vont s'atténuer rapidement au fil des jours.</li>
+                           <li><b>Utilisez vos substituts dès le matin :</b> Si vous avez opté pour des patchs, appliquez-les sans attendre pour éviter que le manque physique ne s'installe.</li>
+                           <li><b>Faites corps avec le groupe :</b> Envoyez un message d'étape à vos amis à chaque victoire de la journée (matinée validée, fin du repas sans fumer...). Votre réussite collective commence ici.</li>
+                       </ul>`
             },
             'astuces': {
-                title: "✨ Astuces pour tenir au quotidien",
-                text: "Le manque ne dure jamais plus de 3 à 5 minutes. Face à une envie :<br><ul><li><b>La règle des 4 D :</b> <b>D</b>ifférer (attendre 5 min), <b>D</b>écompresser (respirer), <b>D</b>ire (appeler un ami du défi), <b>D</b>ivertir (faire autre chose).</li><li><b>Buvez de l'eau :</b> Un grand verre d'eau calme instantanément une partie du signal de manque au cerveau.</li><li><b>Visualisez vos économies :</b> Mettez de côté l'argent non dépensé pour vous offrir un voyage ou un resto ensemble.</li></ul>"
+                title: "✨ Astuces comportementales pour tenir",
+                text: `<p>Le saviez-vous ? Une envie forte de fumer (le "craving") est transitoire. Elle dure rarement plus de **3 à 5 minutes**. Votre mission est de faire diversion pendant ce court laps de temps :</p>
+                       <ul>
+                           <li><b>La stratégie des 4 D de Tabac Info Service :</b>
+                               <br>• <b>D</b>ifférer : Attendez 5 minutes avant de réagir, l'envie va culminer puis chuter.
+                               <br>• <b>D</b>écompresser : Prenez de grandes inspirations ventrales profondes.
+                               <br>• <b>D</b>ire : Discutez avec un ami ou le groupe pour extérioriser le moment.
+                               <br>• <b>D</b>ivertir : Changez radicalement d'activité (marchez, faites un jeu sur téléphone, dessinez).
+                           </li>
+                           <li><b>Évitez les situations à haut risque :</b> Durant les premières semaines, réduisez temporairement les contextes très associés au tabac (comme les soirées alcoolisées) ou prévoyez un plan B non-fumeur.</li>
+                           <li><b>Récompensez-vous :</b> Mettez l'argent économisé dans une cagnotte visible. Utilisez-le pour vous offrir un plaisir commun ou individuel. Votre corps et votre portefeuille vous remercient !</li>
+                       </ul>`
             },
             'craquer': {
                 title: "🚨 HEEELP, je vais craquer !",
-                text: "STOP. Respire à fond. N'oublie pas que l'envie forte est comme une vague : elle monte, culmine, puis redescend tout le temps.<br><br><b>Fais ceci immédiatement :</b><br>1. Change immédiatement de pièce ou d'activité.<br>2. Appelle ou envoie un message d'urgence au groupe maintenant. Un de tes amis va te secouer ou te motiver.<br>3. Respire profondément par le nez en gonflant le ventre, puis expire très lentement par la bouche 5 fois de suite."
+                text: `<p><b>STOP. Ne bougez plus et lisez ceci.</b> L'envie que vous ressentez en ce moment est une réaction chimique passagère, pas un besoin vital.</p>
+                       <div class="highlight-box">
+                           <b>L'exercice de respiration d'urgence :</b> Inspirez profondément par le nez en gonflant le ventre pendant 4 secondes, bloquez votre respiration pendant 4 secondes, puis expirez très lentement par la bouche pendant 6 secondes. Répétez cela 5 fois.
+                       </div>
+                       <p><b>Vos actions immédiates :</b></p>
+                       <ul>
+                           <li><b>Fuyez la situation :</b> Changez immédiatement d'environnement (sortez marcher, changez de pièce, passez-vous de l'eau fraîche sur le visage).</li>
+                           <li><b>Occupez votre bouche et vos mains :</b> Buvez un grand verre d'eau par petites gorgées, mâchez un chewing-gum, ou manipulez un objet (une balle anti-stress).</li>
+                           <li><b>Alertez l'équipe :</b> Envoyez un SOS sur votre groupe de messagerie. Vos amis sont là pour vous rappeler pourquoi vous avez commencé cette aventure.</li>
+                       </ul>`
             },
             'craque': {
-                title: "❤️ Help, j'ai craqué...",
-                text: "Première règle : <b>ZÉRO CULPABILITÉ</b>. Une rechute ou une bouffée ne détruit pas tous tes efforts précédents.<br><br><b>Le plan d'action immédiat :</b><br><ul><li>Ne te dis pas 'foutu pour foutu'. Pose cette cigarette tout de suite.</li><li>Analyse le moment : qu'est-ce qui a provoqué ça ? La fatigue ? Un verre ? Apprends de cette erreur.</li><li>Relance la machine avec le groupe. Le compteur continue, ton objectif santé reste le même. On avance !</li></ul>"
+                title: "❤️ Oups, j'ai fait un faux pas...",
+                text: `<p>Vous avez fumé une cigarette ou pris une bouffée ? **Ne culpabilisez pas et ne baissez pas les bras.** Une baisse de vigilance ne remet absolument pas en cause tout votre parcours.</p>
+                       <ul>
+                           <li><b>Évitez le piège du 'foutu pour foutu' :</b> Fumer une cigarette est un accident de parcours, pas une reprise définitive. Posez ou jetez immédiatement le reste du paquet. Votre démarche reste totalement active.</li>
+                           <li><b>Analysez les faits avec bienveillance :</b> Qu'est-ce qui a provoqué ce faux pas ? Un pic de stress ? La présence d'un autre fumeur ? Une émotion particulière ? Comprendre ce déclencheur vous permettra de mieux le contrer la prochaine fois.</li>
+                           <li><b>Ajustez votre aide :</b> Si le manque physique était trop fort, c'est peut-être que le dosage de vos substituts (patchs, gommes) est trop faible. Prenez conseil auprès d'un pharmacien ou d'un tabacologue.</li>
+                           <li><b>Rejoignez le groupe :</b> Dites-le à vos amis sans honte. L'honnêteté renforce le collectif, et ils sauront vous redonner l'élan nécessaire pour repartir de plus belle. Le compteur tourne toujours, on ne lâche rien !</li>
+                       </ul>`
             }
         };
 
-        // LOGIQUE DE LA FENÊTRE MODALE
         const modal = document.getElementById("infoModal");
         const modalTitle = document.getElementById("modalTitle");
         const modalText = document.getElementById("modalText");
@@ -389,7 +414,6 @@
             }
         }
 
-        // Lancement du décompte
         const intervalId = setInterval(updateCountdown, 1000);
         updateCountdown();
     </script>

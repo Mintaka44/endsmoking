@@ -60,6 +60,67 @@
             width: 100%;
         }
 
+        /* --- SÉLECTEUR DE SUBSTANCE --- */
+        .toggle-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 6px;
+            border-radius: 50px;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 8px 24px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.active.tabac {
+            background: #00acc1;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 172, 193, 0.4);
+        }
+
+        .toggle-btn.active.cannabis {
+            background: #2e7d32;
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.4);
+        }
+
+        /* Bouton Agent IA */
+        .ai-agent-wrapper {
+            margin-bottom: 1.5rem;
+        }
+        .btn-ai-agent {
+            background: rgba(124, 77, 255, 0.2);
+            border: 1px dashed rgba(124, 77, 255, 0.6);
+            color: #b39ddb;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-ai-agent:hover {
+            background: rgba(124, 77, 255, 0.35);
+            border-color: rgba(124, 77, 255, 1);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
         h1 {
             font-size: 2.4rem;
             margin-bottom: 0.8rem;
@@ -110,7 +171,6 @@
             opacity: 0.8;
         }
 
-        /* Message de fin */
         #complete-message {
             font-size: 2rem;
             font-weight: bold;
@@ -123,6 +183,22 @@
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.03); }
         }
+
+        /* --- ZONE SIMULATEUR FINANCIER --- */
+        #finance-simulator {
+            display: none;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 18px;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        .sim-title { font-weight: 600; margin-bottom: 10px; font-size: 1.1rem; text-align: center; color: #4dd0e1; }
+        .sim-title.cannabis-theme { color: #81c784; }
+        .sim-flex { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
+        .sim-input { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); padding: 8px; border-radius: 8px; color: white; width: 90px; font-size: 1rem; text-align: center; }
+        .sim-counter { font-size: 1.4rem; font-weight: bold; text-align: center; color: #ffeb3b; text-shadow: 0 2px 4px rgba(0,0,0,0.4); }
 
         /* --- ZONE DU MENU DE BOUTONS --- */
         .menu-container {
@@ -158,13 +234,18 @@
             transform: scale(1.01);
         }
 
+        .btn-benefit-today { background: rgba(77, 208, 225, 0.25); border-color: rgba(77, 208, 225, 0.4); font-weight: 600; }
+        .btn-benefit-today:hover { background: rgba(77, 208, 225, 0.4); }
+        .btn-benefit-today.cannabis-theme { background: rgba(46, 125, 50, 0.3); border-color: rgba(46, 125, 50, 0.5); }
+        .btn-benefit-today.cannabis-theme:hover { background: rgba(46, 125, 50, 0.45); }
+
         .btn-panic { background: rgba(239, 83, 80, 0.25); border-color: rgba(239, 83, 80, 0.4); }
         .btn-panic:hover { background: rgba(239, 83, 80, 0.4); border-color: rgba(239, 83, 80, 0.6); }
 
         .btn-relapse { background: rgba(255, 167, 38, 0.2); border-color: rgba(255, 167, 38, 0.35); }
         .btn-relapse:hover { background: rgba(255, 167, 38, 0.35); border-color: rgba(255, 167, 38, 0.5); }
 
-        /* --- FENÊTRE MODALE PLUS GRANDE --- */
+        /* --- FENÊTRE MODALE --- */
         .modal {
             display: none;
             position: fixed;
@@ -183,7 +264,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 3rem;
             border-radius: 28px;
-            max-width: 850px; /* Agrandissement significatif */
+            max-width: 850px;
             width: 100%;
             max-height: 85vh;
             overflow-y: auto;
@@ -210,10 +291,13 @@
         .modal-title {
             font-size: 1.8rem;
             margin-bottom: 1.5rem;
-            color: #4dd0e1;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             padding-bottom: 10px;
         }
+        
+        .modal-title.tabac-theme { color: #4dd0e1; }
+        .modal-title.cannabis-theme { color: #81c784; }
+        .modal-title.ai-theme { color: #b39ddb; }
 
         .modal-text {
             font-size: 1.05rem;
@@ -222,41 +306,104 @@
             opacity: 0.95;
         }
 
-        .modal-text p {
+        /* --- BLOC ZONE TEXTE PROMPT --- */
+        .prompt-textarea {
+            width: 100%;
+            height: 250px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #e0e0e0;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            resize: none;
+            margin-top: 15px;
             margin-bottom: 15px;
+            line-height: 1.4;
         }
 
-        .modal-text ul {
-            margin-left: 22px;
-            margin-top: 10px;
-            margin-bottom: 20px;
+        .btn-copy {
+            background: #7c4dff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        .modal-text li {
-            margin-bottom: 12px;
+        .btn-copy:hover { background: #651fff; }
+
+        .big-benefit-display {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.4rem;
+            line-height: 1.6;
+            font-weight: 500;
+            color: #fff;
         }
+
+        .modal-text p { margin-bottom: 15px; }
+        .modal-text ul { margin-left: 22px; margin-top: 10px; margin-bottom: 20px; }
+        .modal-text li { margin-bottom: 12px; }
         
+        /* Cadre de rappel psychologique d'urgence */
+        .live-benefit-reminder {
+            background: rgba(255, 235, 59, 0.1);
+            border: 1px dashed #ffeb3b;
+            padding: 16px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+            line-height: 1.5;
+        }
+        .live-benefit-reminder.panic-mode { border-color: #ef5350; background: rgba(239, 83, 80, 0.08); }
+        .live-benefit-reminder.relapse-mode { border-color: #ffa726; background: rgba(255, 167, 38, 0.08); }
+
         .highlight-box {
-            background: rgba(77, 208, 225, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             border-left: 4px solid #4dd0e1;
             padding: 15px;
             border-radius: 0 12px 12px 0;
             margin: 20px 0;
         }
+        .highlight-box.cannabis-theme { border-left-color: #81c784; }
 
-        /* Responsive */
+        .timeline { margin-top: 15px; }
+        .timeline-item { margin-bottom: 20px; padding-left: 15px; border-left: 2px dashed rgba(255, 255, 255, 0.2); }
+        .timeline-time { font-weight: bold; color: #4dd0e1; font-size: 1.1rem; }
+        .timeline-time.cannabis-theme { color: #81c784; }
+
         @media (max-width: 520px) {
             h1 { font-size: 1.8rem; }
             .number { font-size: 2.2rem; }
             .countdown-grid { gap: 8px; }
             .time-box { padding: 1rem 0.2rem; }
             .modal-content { padding: 1.5rem; }
+            .sim-flex { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Le Grand Départ 🚭</h1>
+        <!-- ONGLES DE SÉLECTION D'OBJECTIF -->
+        <div class="toggle-container">
+            <button id="btn-tabac" class="toggle-btn active tabac" onclick="setSubstance('tabac')">Option Tabac</button>
+            <button id="btn-cannabis" class="toggle-btn" onclick="setSubstance('cannabis')">Option Cannabis</button>
+        </div>
+
+        <!-- ACCÈS AGENT IA -->
+        <div class="ai-agent-wrapper">
+            <button class="btn-ai-agent" onclick="openAIModal()">🤖 Activer mon Agent IA de poche</button>
+        </div>
+
+        <h1 id="main-title">Le Grand Départ <span id="main-emoji">🚭</span></h1>
         
         <div id="countdown-section">
             <p class="subtitle">Libres, ensemble et à pleins poumons. Le décompte :</p>
@@ -272,12 +419,25 @@
             C'est le moment ! Respirez l'air pur de la forêt. 🌱
         </div>
 
+        <!-- BLOC SIMULATEUR FINANCIER -->
+        <div id="finance-simulator">
+            <div id="sim-title-id" class="sim-title">💰 Mon compteur d'économies</div>
+            <div class="sim-flex">
+                <label for="monthly-budget">Budget mensuel habituel :</label>
+                <input type="number" id="monthly-budget" class="sim-input" value="150" oninput="calculateSavings()"> <span style="font-weight:bold;">€</span>
+            </div>
+            <div id="savings-display" class="sim-counter">0.00 € économisés</div>
+        </div>
+
         <div class="menu-container">
+            <button class="btn" onclick="openModal('bienfaits')">📈 Évolution globale des bienfaits (3 Mois)</button>
+            
             <div id="menu-before">
                 <button class="btn" onclick="openModal('prep')">🌱 Se préparer à arrêter</button>
-                <button class="btn" onclick="openModal('jour-j')">🚀 Le jour J : Mode d'emploi</button>
+                <button class="btn" onclick="openModal('jour-j')">🚀 Préparer le jour J</button>
             </div>
             <div id="menu-after">
+                <button id="btn-today-benefit" class="btn btn-benefit-today" onclick="openTodayBenefitModal()">⭐ Le bienfait du jour</button>
                 <button class="btn" onclick="openModal('astuces')">✨ Astuces pour tenir</button>
                 <button class="btn btn-panic" onclick="openModal('craquer')">🚨 HEEELP, je vais craquer !</button>
                 <button class="btn btn-relapse" onclick="openModal('craque')">❤️ Help, j'ai craqué...</button>
@@ -295,16 +455,42 @@
 
     <script>
         const targetDate = new Date("August 7, 2026 00:01:00").getTime();
+        let currentSubstance = 'tabac'; 
 
         const countdownSection = document.getElementById("countdown-section");
         const completeMessage = document.getElementById("complete-message");
         const menuBefore = document.getElementById("menu-before");
         const menuAfter = document.getElementById("menu-after");
+        const financeSimulator = document.getElementById("finance-simulator");
 
         const daysEl = document.getElementById("days");
         const hoursEl = document.getElementById("hours");
         const minutesEl = document.getElementById("minutes");
         const secondsEl = document.getElementById("seconds");
+
+        function setSubstance(type) {
+            currentSubstance = type;
+            const btnTabac = document.getElementById("btn-tabac");
+            const btnCannabis = document.getElementById("btn-cannabis");
+            const titleEmoji = document.getElementById("main-emoji");
+            const simTitle = document.getElementById("sim-title-id");
+            const btnToday = document.getElementById("btn-today-benefit");
+
+            if(type === 'tabac') {
+                btnTabac.classList.add("active", "tabac");
+                btnCannabis.classList.remove("active", "cannabis");
+                titleEmoji.innerText = "🚭";
+                simTitle.className = "sim-title";
+                btnToday.classList.remove("cannabis-theme");
+            } else {
+                btnCannabis.classList.add("active", "cannabis");
+                btnTabac.classList.remove("active", "tabac");
+                titleEmoji.innerText = "🍁";
+                simTitle.className = "sim-title cannabis-theme";
+                btnToday.classList.add("cannabis-theme");
+            }
+            calculateSavings();
+        }
 
         function updateCountdown() {
             const now = new Date().getTime();
@@ -315,12 +501,14 @@
                 completeMessage.style.display = "block";
                 menuBefore.style.display = "none";
                 menuAfter.style.display = "flex";
-                clearInterval(intervalId);
+                financeSimulator.style.display = "block";
+                calculateSavings();
                 return;
             }
 
             menuBefore.style.display = "flex";
             menuAfter.style.display = "none";
+            financeSimulator.style.display = "none";
 
             const days = Math.floor(difference / (1000 * 60 * 60 * 24));
             const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -333,74 +521,304 @@
             secondsEl.innerText = seconds < 10 ? "0" + seconds : seconds;
         }
 
-        // TEXTES STRUCTURÉS SELON LES CONSEILS OFFICIELS DE TABAC INFO SERVICE
+        function calculateSavings() {
+            const now = new Date().getTime();
+            const timePassedMs = now - targetDate;
+            if (timePassedMs < 0) return;
+
+            const budgetMensuel = parseFloat(document.getElementById("monthly-budget").value) || 0;
+            const msDansUnMois = 30.416 * 24 * 60 * 60 * 1000;
+            const budgetParMs = budgetMensuel / msDansUnMois;
+
+            const economise = timePassedMs * budgetParMs;
+            document.getElementById("savings-display").innerText = economise.toFixed(2) + " € économisés";
+        }
+
+        // TEXTES DE CONSEILS GENERAUX
         const contentData = {
-            'prep': {
-                title: "🌱 Se préparer à arrêter (Conseils Tabac Info Service)",
-                text: `<p>Un arrêt bien préparé multiplie drastiquement vos chances de réussite. D'ici le 7 août, travaillez votre stratégie en équipe :</p>
-                       <ul>
-                           <li><b>Faites le point sur vos motivations :</b> Notez-les par écrit (santé, budget, liberté). Relisez-les ensemble lorsque vous doutez.</li>
-                           <li><b>Évaluez votre dépendance :</b> Si vous fumez dès le réveil, une béquille (substituts nicotiniques comme les patchs ou gommes) peut être votre meilleure alliée. N'hésitez pas à consulter un professionnel de santé.</li>
-                           <li><b>Identifiez vos habitudes et automatismes :</b> Repérez à quelles situations ou émotions chaque cigarette est associée (stress, café, alcool, ennui) pour planifier à l'avance des comportements de remplacement.</li>
-                           <li><b>Éliminez la tentation :</b> Jetez absolument tout ce qui rappelle le tabac (paquets, briquets, cendriers) pour que votre environnement devienne une zone saine de respiration.</li>
-                       </ul>`
+            'tabac': {
+                'prep': {
+                    title: "🌱 Se préparer à arrêter le Tabac",
+                    text: `<p>Un sevrage bien planifié augmente considérablement la réussite de l'équipe. Voici la feuille de route d'ici le 7 août :</p>
+                           <ul>
+                               <li><b>Listez vos piliers de motivation :</b> Notez-les précisément (liberté, souffle retrouvé, économies). Partagez votre liste sur votre fil de discussion.</li>
+                               <li><b>Réfléchissez aux outils d'aide :</b> Évaluez si vous aurez besoin de substituts nicotiniques (patchs, gommes, sprays) pour atténuer le manque physique du matin.</li>
+                               <li><b>Cartographiez vos habitudes :</b> Notez les cigarettes les plus rituelles (après le repas, avec le café, en voiture) afin de prévoir une alternative pour chacune d'elles.</li>
+                               <li><b>Faites place nette :</b> La veille de la date fatidique, débarrassez-vous de l'intégralité de vos paquets, cendriers et briquets.</li>
+                           </ul>`
+                },
+                'jour-j': {
+                    title: "🚀 Préparer le Jour J (Tabac)",
+                    text: `<p>Le jour où le compteur atteindra zéro, l'objectif sera simple : tenir les premières 24 heures sans toucher à une seule cigarette. Voici le plan validé pour ce jour-là :</p>
+                           <ul>
+                               <li><b>Briser les automatismes :</b> Il faudra immédiatement changer les rituels du matin. Par exemple, prendre sa douche directement au réveil, remplacer le café matinal par un grand verre d'eau ou un jus d'agrume frais.</li>
+                               <li><b>Le brossage réflexe :</b> Dès la fin d'un repas, la consigne sera d'aller directement se brosser les dents. La fraîcheur de la menthe coupe efficacement l'envie réflexe d'allumer une cigarette.</li>
+                               <li><b>Gérer la nervosité :</b> Si une tension apparaît, c'est le signal que le corps élimine les toxines. Utilisez vos substituts dès le matin si vous en avez prévu.</li>
+                           </ul>`
+                },
+                'astuces': {
+                    title: "✨ Astuces pour maintenir votre liberté",
+                    text: `<p>Le besoin impérieux de fumer s'apparente à une vague : il culmine intensément mais s'effondre en seulement <b>3 à 5 minutes</b>. Appliquez ces méthodes de dérivation :</p>
+                           <ul>
+                               <li><b>La méthode du retardement :</b> Attendez 5 minutes chronométrées en buvant lentement un grand verre d'eau fraîche, l'impulsion va redescendre d'elle-même.</li>
+                               <li><b>Le changement d'axe :</b> Quittez instantanément la situation ou la pièce où vous vous trouvez, faites dix pas à l'extérieur ou passez-vous de l'eau sur le visage.</li>
+                               <li><b>Visualisez la cagnotte :</b> Calculez l'argent préservé au jour le jour et planifiez une belle activité ou récompense à faire tous ensemble à la fin du premier mois.</li>
+                           </ul>`
+                },
+                'craquer': {
+                    title: "🚨 Urgence : Gérer une grosse pulsion",
+                    text: `<div class="highlight-box">
+                               <b>Exercice de secours immédiat :</b> Inspirez à fond par le nez en gonflant le ventre pendant 4 secondes, bloquez l'air pendant 4 secondes, puis expirez par la bouche de manière très lente pendant 6 secondes. Répétez ce cycle à 5 reprises.
+                           </div>
+                           <ul>
+                               <li><b>Occupez vos mains :</b> Prenez un stylo, une balle anti-stress ou lancez un nettoyage rapide pour occuper l'esprit.</li>
+                               <li><b>Déclenchez l'alerte d'équipe :</b> Écrivez tout de suite un message de crise sur votre fil d'amis. Un camarade va vous rappeler pourquoi vous menez ce combat.</li>
+                           </ul>`
+                },
+                'craque': {
+                    title: "❤️ Analyse d'un faux pas",
+                    text: `<p>Écartez immédiatement toute culpabilité excessive. Un écart ne détruit pas la totalité des efforts accumulés.</p>
+                           <ul>
+                               <li><b>Stopper l'effet boule de neige :</b> Ne tombez pas dans le piège de vous dire que tout est perdu. Posez immédiatement la cigarette. Une seule entorse reste un accident, pas une rechute.</li>
+                               <li><b>Décrypter la situation :</b> Que s'est-il passé ? Était-ce dû à un pic de stress, à l'alcool, à de la fatigue ? Identifiez ce déclencheur pour adapter votre bouclier la prochaine fois.</li>
+                               <li><b>Revenez dans la course :</b> Prévenez le groupe en toute franchise, le soutien mutuel sert exactement à cela. On se remobilise !</li>
+                           </ul>`
+                },
+                'bienfaits': {
+                    title: "📈 Chronologie globale des bienfaits (3 Mois de pureté)",
+                    text: `<div class="timeline">
+                               <div class="timeline-item"><span class="timeline-time">20 min à 24h :</span><p>Le rythme cardiaque se stabilise, le monoxyde de carbone est rejeté et les poumons commencent leur grand nettoyage.</p></div>
+                               <div class="timeline-item"><span class="timeline-time">48 heures :</span><p>La nicotine a totalement quitté le corps. Le goût et l'odorat redeviennent incroyablement précis.</p></div>
+                               <div class="timeline-item"><span class="timeline-time">2 semaines :</span><p>La fonction pulmonaire remonte. Le sang circule mieux, les muscles fatiguent moins vite lors des efforts.</p></div>
+                               <div class="timeline-item"><span class="timeline-time">3 à 4 semaines :</span><p>Le sommeil profond se stabilise, la dépendance psychologique faiblit et les cils vibratiles se reconstruisent.</p></div>
+                               <div class="timeline-item"><span class="timeline-time">1 à 2 mois :</span><p>La toux de nettoyage disparaît complètement. La voix est plus claire, le teint est lumineux et les économies explosent.</p></div>
+                               <div class="timeline-item"><span class="timeline-time">3 mois :</span><p>Votre capacité respiratoire s'est accrue de près de 30%. Le risque de crise cardiaque a déjà diminué de moitié. Vous êtes solidement ancré dans votre liberté.</p></div>
+                           </div>`
+                }
             },
-            'jour-j': {
-                title: "🚀 Le jour J : Mode d'emploi",
-                text: `<p>Aujourd'hui, c'est le grand saut. Pas besoin de penser aux mois à venir, concentrez-vous uniquement sur **les prochaines 24 heures** :</p>
-                       <ul>
-                           <li><b>Modifiez votre routine :</b> Rompez immédiatement vos rituels du matin. Prenez votre petit-déjeuner dans une autre pièce, buvez un thé plutôt qu'un café, ou brossez-vous les dents directement après le repas.</li>
-                           <li><b>Anticipez les symptômes de sevrage :</b> L'irritabilité, la fatigue ou la toux sont des réactions normales de votre corps qui se purifie. Ils vont s'atténuer rapidement au fil des jours.</li>
-                           <li><b>Utilisez vos substituts dès le matin :</b> Si vous avez opté pour des patchs, appliquez-les sans attendre pour éviter que le manque physique ne s'installe.</li>
-                           <li><b>Faites corps avec le groupe :</b> Envoyez un message d'étape à vos amis à chaque victoire de la journée (matinée validée, fin du repas sans fumer...). Votre réussite collective commence ici.</li>
-                       </ul>`
-            },
-            'astuces': {
-                title: "✨ Astuces comportementales pour tenir",
-                text: `<p>Le saviez-vous ? Une envie forte de fumer (le "craving") est transitoire. Elle dure rarement plus de **3 à 5 minutes**. Votre mission est de faire diversion pendant ce court laps de temps :</p>
-                       <ul>
-                           <li><b>La stratégie des 4 D de Tabac Info Service :</b>
-                               <br>• <b>D</b>ifférer : Attendez 5 minutes avant de réagir, l'envie va culminer puis chuter.
-                               <br>• <b>D</b>écompresser : Prenez de grandes inspirations ventrales profondes.
-                               <br>• <b>D</b>ire : Discutez avec un ami ou le groupe pour extérioriser le moment.
-                               <br>• <b>D</b>ivertir : Changez radicalement d'activité (marchez, faites un jeu sur téléphone, dessinez).
-                           </li>
-                           <li><b>Évitez les situations à haut risque :</b> Durant les premières semaines, réduisez temporairement les contextes très associés au tabac (comme les soirées alcoolisées) ou prévoyez un plan B non-fumeur.</li>
-                           <li><b>Récompensez-vous :</b> Mettez l'argent économisé dans une cagnotte visible. Utilisez-le pour vous offrir un plaisir commun ou individuel. Votre corps et votre portefeuille vous remercient !</li>
-                       </ul>`
-            },
-            'craquer': {
-                title: "🚨 HEEELP, je vais craquer !",
-                text: `<p><b>STOP. Ne bougez plus et lisez ceci.</b> L'envie que vous ressentez en ce moment est une réaction chimique passagère, pas un besoin vital.</p>
-                       <div class="highlight-box">
-                           <b>L'exercice de respiration d'urgence :</b> Inspirez profondément par le nez en gonflant le ventre pendant 4 secondes, bloquez votre respiration pendant 4 secondes, puis expirez très lentement par la bouche pendant 6 secondes. Répétez cela 5 fois.
-                       </div>
-                       <p><b>Vos actions immédiates :</b></p>
-                       <ul>
-                           <li><b>Fuyez la situation :</b> Changez immédiatement d'environnement (sortez marcher, changez de pièce, passez-vous de l'eau fraîche sur le visage).</li>
-                           <li><b>Occupez votre bouche et vos mains :</b> Buvez un grand verre d'eau par petites gorgées, mâchez un chewing-gum, ou manipulez un objet (une balle anti-stress).</li>
-                           <li><b>Alertez l'équipe :</b> Envoyez un SOS sur votre groupe de messagerie. Vos amis sont là pour vous rappeler pourquoi vous avez commencé cette aventure.</li>
-                       </ul>`
-            },
-            'craque': {
-                title: "❤️ Oups, j'ai fait un faux pas...",
-                text: `<p>Vous avez fumé une cigarette ou pris une bouffée ? **Ne culpabilisez pas et ne baissez pas les bras.** Une baisse de vigilance ne remet absolument pas en cause tout votre parcours.</p>
-                       <ul>
-                           <li><b>Évitez le piège du 'foutu pour foutu' :</b> Fumer une cigarette est un accident de parcours, pas une reprise définitive. Posez ou jetez immédiatement le reste du paquet. Votre démarche reste totalement active.</li>
-                           <li><b>Analysez les faits avec bienveillance :</b> Qu'est-ce qui a provoqué ce faux pas ? Un pic de stress ? La présence d'un autre fumeur ? Une émotion particulière ? Comprendre ce déclencheur vous permettra de mieux le contrer la prochaine fois.</li>
-                           <li><b>Ajustez votre aide :</b> Si le manque physique était trop fort, c'est peut-être que le dosage de vos substituts (patchs, gommes) est trop faible. Prenez conseil auprès d'un pharmacien ou d'un tabacologue.</li>
-                           <li><b>Rejoignez le groupe :</b> Dites-le à vos amis sans honte. L'honnêteté renforce le collectif, et ils sauront vous redonner l'élan nécessaire pour repartir de plus belle. Le compteur tourne toujours, on ne lâche rien !</li>
-                       </ul>`
+            'cannabis': {
+                'prep': {
+                    title: "🌱 Se préparer à arrêter le Cannabis",
+                    text: `<p>L'arrêt du cannabis est une démarche libératrice pour l'esprit et la clarté mentale. Voici comment vous organiser collectivement d'ici le 7 août :</p>
+                           <ul>
+                               <li><b>Listez les motivations profondes :</b> Retrouver de l'énergie, de la mémoire, un meilleur sommeil à terme, ou cesser de dépendre d'un produit. Affichez ces raisons bien en vue.</li>
+                               <li><b>Identifiez les rituels de consommation :</b> S'agit-il du joint du soir pour dormir ? De celui du week-end entre amis ? Repérer ces moments clés permet de planifier des activités de substitution.</li>
+                               <li><b>Préparez de quoi vous occuper :</b> Le sevrage du cannabis libère beaucoup de temps libre. Prévoyez des projets créatifs, du sport ou des séries pour occuper vos soirées à venir.</li>
+                               <li><b>Nettoyage général :</b> Débarrassez-vous de tout le matériel (broyeurs, feuilles, pipes, filtres) pour ne pas être tenté dans un moment de faiblesse.</li>
+                           </ul>`
+                },
+                'jour-j': {
+                    title: "🚀 Préparer le Jour J (Cannabis)",
+                    text: `<p>Quand le compte à rebours touchera à sa fin, vous entamerez votre première journée de totale clarté d'esprit. Voici ce qu'il faudra appliquer concrètement :</p>
+                           <ul>
+                               <li><b>Repenser la fin de journée :</b> Pour le premier soir, n'attendez pas l'heure habituelle de consommation sur votre canapé. Changez de configuration : sortez faire une marche, cuisinez une recette complexe ou lancez une session de jeu interactive en ligne avec vos amis du défi.</li>
+                               <li><b>Anticiper le sommeil :</b> Les premières nuits peuvent être agitées, avec des rêves très intenses (le cerveau récupère son sommeil paradoxal). Préparez des tisanes relaxantes (camomille, valériane) et lisez un livre loin des écrans avant de dormir.</li>
+                               <li><b>Communiquer en direct :</b> Le premier soir sera un moment charnière. Connectez-vous avec vos proches engagés dans le défi pour vous soutenir mutuellement tout au long de la soirée.</li>
+                           </ul>`
+                },
+                'astuces': {
+                    title: "✨ Astuces pour maintenir votre clarté",
+                    text: `<p>Les envies de consommer durent généralement peu de temps si on refuse de nourrir la pensée. Utilisez ces techniques simples pour contourner l'impulsion :</p>
+                           <ul>
+                               <li><b>La technique de la dérivation mentale :</b> Occupez instantanément votre cerveau avec une tâche exigeante (calcul mental, puzzle, écriture, brossage de dents, douche fraîche).</li>
+                               <li><b>Dépensez votre énergie :</b> Le cannabis ayant un effet sédatif, son absence peut générer un trop-plein d'énergie ou de nervosité. Utilisez le sport, le running ou le ménage pour fatiguer sainement votre corps.</li>
+                           </ul>`
+                },
+                'craquer': {
+                    title: "🚨 Urgence : Faire face à une forte envie",
+                    text: `<div class="highlight-box cannabis-theme">
+                               <b>Exercice d'ancrage rapide :</b> Regardez autour de vous et nommez mentalement 5 objets visibles, 4 sons que vous entendez, 3 sensations physiques, 2 odeurs et prenez une immense inspiration. Cet exercice ramène votre esprit dans le moment présent.
+                           </div>
+                           <ul>
+                               <li><b>Changez immédiatement d'activité :</b> Si vous êtes assis, levez-vous. Allez boire un très grand verre d'eau par petites gorgées.</li>
+                               <li><b>Appelez vos alliés :</b> Envoyez tout de suite un signal d'urgence sur le groupe. Vos amis engagés dans le défi sauront trouver les mots justes.</li>
+                           </ul>`
+                },
+                'craque': {
+                    title: "❤️ En cas de faux pas",
+                    text: `<p>Une chute n'est pas un échec définitif, c'est une étape d'apprentissage. Ne laissez pas un moment d'égarement effacer votre parcours.</p>
+                           <ul>
+                               <li><b>Arrêter immédiatement les frais :</b> Ce n'est pas parce que vous avez fait un faux pas que votre démarche globale est annulée. Jetez ce qu'il reste sur le moment.</li>
+                               <li><b>Comprendre pour mieux anticiper :</b> Quelle a été la faille ? Ennui, insomnie, contrariété sociale ? Trouver la cause permet de concevoir une meilleure parade pour la suite.</li>
+                           </ul>`
+                },
+                'bienfaits': {
+                    title: "📈 Chronologie globale des bienfaits (3 Mois de clarté)",
+                    text: `<div class="timeline">
+                               <div class="timeline-item"><span class="timeline-time cannabis-theme">Jour 1 à 3 :</span><p>Élimination complète du monoxyde de carbone. Le brouillard mental matinal commence à se dissiper, la concentration revient.</p></div>
+                               <div class="timeline-item"><span class="timeline-time cannabis-theme">1 semaine :</span><p>Le sommeil paradoxal se restructure. Les rêves deviennent extrêmement vivants et le sommeil est enfin réparateur.</p></div>
+                               <div class="timeline-item"><span class="timeline-time cannabis-theme">2 à 3 semaines :</span><p>La mémoire à court terme redeviennent hautement performante. La motivation naturelle (production de dopamine) se rééquilibre.</p></div>
+                               <div class="timeline-item"><span class="timeline-time cannabis-theme">1 mois :</span><p>Le THC accumulé dans les tissus adipeux est en très grande partie évacué. L'anxiété ou l'irritabilité du sevrage disparaissent complètement.</p></div>
+                               <div class="timeline-item"><span class="timeline-time cannabis-theme">2 à 3 mois :</span><p>Vos récepteurs cérébraux ont retrouvé leur état initial stable. Votre énergie, votre niveau de créativité et votre réactivité cognitive sont à leur maximum de potentiel. Vous êtes totalement libre.</p></div>
+                           </div>`
+                }
             }
         };
 
-        const modal = document.getElementById("infoModal");
-        const modalTitle = document.getElementById("modalTitle");
-        const modalText = document.getElementById("modalText");
+        // ALGORITHME DES BIENFAITS ACQUIS EN DIRECT POUR LES ALERTES URGENTES
+        function getLiveBenefitSummary(substance, jours, isCraquage) {
+            let resume = "";
+            const prefixe = isCraquage 
+                ? "⚠️ <b>Regarde ce que tu as déjà construit en " + jours + " jour(s) :</b> " 
+                : "💡 <b>Rappelle-toi pourquoi tu te bats. En " + jours + " jour(s) :</b> ";
+
+            if (substance === 'tabac') {
+                if (jours === 0) resume = "Ton rythme cardiaque s'est déjà restabilisé et tes poumons rejettent les premières impuretés. Ne gâche pas ce superbe élan initial !";
+                else if (jours === 1) resume = "Le monoxyde de carbone toxique a été entièrement purgé de ton sang. Tes muscles et tes organes respirent enfin ! C'est trop tôt pour faire demi-tour.";
+                else if (jours === 2) resume = "La nicotine a totalement quitté ton corps et tes sens du goût et de l'odorat sont en train de renaître. Ta liberté est à portée de main !";
+                else if (jours <= 5) resume = "Tes bronches ont commencé à se détendre et ton souffle s'améliore à vue d'œil. Ton corps fait un effort titanesque, soutiens-le !";
+                else if (jours <= 14) resume = "Ta circulation sanguine s'est nettement dynamisée et ton teint est redevenu éclatant. La dépendance physique est derrière toi, tiens bon !";
+                else if (jours <= 30) resume = "Un mois d'efforts ! Les cils de tes poumons se sont reconstruits et les nettoient activement heure par heure. Ne laisse pas une bouffée balayer tout ce travail.";
+                else if (jours <= 60) resume = "Plus d'un mois sans tabac ! Ta toux chronique est finie, ta voix est plus nette et ton souffle est puissant. Regarde aussi la somme astronomique économisée !";
+                else resume = "Près de 3 mois d'air pur ! Ta capacité respiratoire a bondi de 30% et tes risques cardiaques fondent. Tu es un non-fumeur, confirme ton statut aujourd'hui !";
+            } else {
+                if (jours === 0) resume = "Ton corps fait une pause salvatrice immédiate. Le monoxyde de carbone s'évacue et ton cœur ralentit son rythme de stress. Reste solide !";
+                else if (jours <= 2) resume = "Le brouillard cérébral se dissipe enfin. Ta pensée redevinement nette, claire et lucide. Ne retombe pas dans la brume pour quelques minutes d'égarement.";
+                else if (jours <= 6) resume = "Ton sommeil paradoxal profond est en pleine reconstruction. Tes nuits redeviennent de vraies batteries d'énergie naturelle. Accroche-toi !";
+                else if (jours <= 14) resume = "Ta mémoire immédiate et ta vivacité cognitive font un bond en avant spectaculaire. Tu te réappropries ton plein potentiel intellectuel !";
+                else if (jours <= 30) resume = "Le THC accumulé s'est presque totalement volatilisé. Ton niveau de motivation naturelle se stabilise de manière autonome. Tu as fait le plus dur !";
+                else resume = "Plus d'un mois et demi de clarté totale ! Tes récepteurs cérébraux ont fait un reset complet, ton humeur s'auto-régule. Tu as brisé les vieux rituels, continue d'avancer !";
+            }
+            return prefixe + resume;
+        }
+
+        function openTodayBenefitModal() {
+            const now = new Date().getTime();
+            const timePassedMs = now - targetDate;
+            if(timePassedMs < 0) return;
+
+            const joursCoules = Math.floor(timePassedMs / (1000 * 60 * 60 * 24));
+            let message = "";
+
+            if (currentSubstance === 'tabac') {
+                modalTitle.innerText = "⭐ Votre Bienfait du Jour (Tabac)";
+                modalTitle.className = "modal-title tabac-theme";
+                
+                if (joursCoules === 0) message = "⏱️ <b>Départ validé !</b> Vos poumons n'engrangent plus de fumée neuve. Votre rythme cardiaque s'est stabilisé.";
+                else if (joursCoules === 1) message = "💨 <b>Jour 1 :</b> Le monoxyde de carbone a quitté votre sang. Vos cellules et vos muscles respirent enfin à plein volume !";
+                else if (joursCoules === 2) message = "👃 <b>Jour 2 :</b> Incroyable ! Vos fins récepteurs du goût et de l'odorat renaissent. Profitez des saveurs aujourd'hui !";
+                else if (joursCoules <= 5) message = "𫓁 <b>Jour " + joursCoules + " :</b> Vos bronches se relâchent, l'air circule beaucoup mieux et l'endurance augmente.";
+                else if (joursCoules <= 14) message = "🩸 <b>Semaine 2 :</b> Votre circulation sanguine générale s'est redynamisée. Votre teint est plus éclatant et moins fatigué.";
+                else if (joursCoules <= 21) message = "🧘 <b>Semaine 3 :</b> La dépendance physique s'effondre. Les neurotransmetteurs de votre cerveau réapprennent à vivre sereinement sans nicotine.";
+                else if (joursCoules <= 30) message = "🛡️ <b>Mois 1 :</b> Un mois entier ! Vos cils bronchiques se sont reconstruits et nettoient activement vos poumons des impuretés historiques.";
+                else if (joursCoules <= 60) message = "💪 <b>Mois 2 :</b> La toux de nettoyage s'est tue. Vos cordes vocales se portent mieux, votre souffle est puissant et vos économies sont colossales !";
+                else if (joursCoules <= 90) message = "⚡ <b>Mois 3 :</b> Votre capacité respiratoire s'est accrue de près de 30% ! Vos poumons ont retrouvé une force de défense et d'oxygénation hors norme.";
+                else message = "🏆 <b>Plus de 3 mois de liberté totale !</b> Votre risque de maladie cardiaque a diminué de moitié. Vous avez ancré une habitude de vie saine et durable. L'équipe est fière de vous !";
+            } else {
+                modalTitle.innerText = "⭐ Votre Bienfait du Jour (Cannabis)";
+                modalTitle.className = "modal-title cannabis-theme";
+
+                if (joursCoules === 0) message = "✨ <b>Le changement commence !</b> Votre système respiratoire et cardiaque fait une pause salvatrice immédiate.";
+                else if (joursCoules <= 2) message = "🧠 <b>Jour " + joursCoules + " :</b> Votre vigilance se réveille. Le cerveau commence à éliminer le voile pour laisser place à une pensée claire.";
+                else if (joursCoules <= 6) message = "🛌 <b>Jour " + joursCoules + " :</b> Votre sommeil se structure. Votre cerveau récupère son précieux sommeil paradoxal. Vos nuits redeviennent enfin réparatrices !";
+                else if (joursCoules <= 14) message = "📚 <b>Semaine 2 :</b> Votre mémoire à court terme et votre vivacité intellectuelle font un bond en avant impressionnant.";
+                else if (joursCoules <= 21) message = "🎯 <b>Semaine 3 :</b> Votre niveau de motivation naturelle se recalibre. Votre cerveau produit sa propre énergie de manière saine et autonome.";
+                else if (joursCoules <= 30) message = "🍃 <b>Mois 1 :</b> Un mois complet de clarté ! Le THC stocké s'est en grande partie dissipé. L'anxiété liée au manque s'est éteinte.";
+                else if (joursCoules <= 60) message = "🚀 <b>Mois 2 :</b> Vos rêves se stabilisent, votre humeur est parfaitement auto-régulée et vous avez brisé la dépendance comportementale du soir.";
+                else if (joursCoules <= 90) message = "🛡️ <b>Mois 3 :</b> Cap des 90 jours franchi ! Vos récepteurs cérébraux ont fait un reset complet. Vos fonctions cognitives tournent à plein régime. Bravo !";
+                else message = "🏆 <b>Plus de 3 mois de totale indépendance !</b> Vous avez redécouvert votre vraie personnalité, votre clarté d'esprit et une liberté d'action inestimable. Le collectif continue de tenir !";
+            }
+
+            modalText.innerHTML = `<div class="big-benefit-display">${message}</div>`;
+            modal.style.display = "flex";
+        }
+
+        // POPUP AGENT IA ET CONFIGURATION DU PROMPT EXPERT
+        function openAIModal() {
+            modalTitle.innerText = "🤖 Mon Agent IA de poche";
+            modalTitle.className = "modal-title ai-theme";
+
+            const now = new Date().getTime();
+            const timePassedMs = now - targetDate;
+            let precisionSevrage = "";
+
+            if(timePassedMs < 0) {
+                const diff = targetDate - now;
+                const joursRestants = Math.ceil(diff / (1000 * 60 * 60 * 24));
+                precisionSevrage = `L'utilisateur est en phase de préparation active. Son grand départ (Jour J) est planifié dans exactement ${joursRestants} jours (le 7 août 2026).`;
+            } else {
+                const joursPasses = Math.floor(timePassedMs / (1000 * 60 * 60 * 24));
+                precisionSevrage = `L'utilisateur a arrêté sa consommation il y a maintenant ${joursPasses} jours (depuis le 7 août 2026).`;
+            }
+
+            // Génération du Prompt Système ultra-optimisé
+            const systemPrompt = `Tu es un expert en addictologie, psychologie comportementale et un coach de sevrage ultra-bienveillant. Tu accompagnes un utilisateur engagé dans un défi d'arrêt du produit suivant : [${currentSubstance.toUpperCase()}].
+
+CONTEXTE ACTUEL :
+- ${precisionSevrage}
+- Ton interlocuteur fait partie d'un collectif d'entraide (défi d'équipe). 
+- Le ton de la plateforme est fondé sur l'ancrage positif, la nature apaisante et la solidarité.
+
+TES LIGNES DIRECTRICES POUR LA CONVERSATION :
+1. POSTURE & DIRECTIVES PSYCHOLOGIQUES :
+   - Pratique l'écoute active et l'Entretien Motivationnel (EM). Valorise toujours l'auto-efficacité de l'utilisateur.
+   - Ne juge JAMAIS. Si l'utilisateur exprime une envie forte (craquage imminent) ou un faux pas (écart/rechute), déculpabilise-le immédiatement. Traite l'écart comme un simple "événement d'apprentissage" et non comme un échec.
+   - Utilise une communication chaleureuse, empathique, ancrée et encourageante. Parle d'égal à égal, comme un guide de confiance ou un pair-aidant aguerri.
+
+2. CONNAISSANCES TECHNIQUES À UTILISER :
+   - Si [TABAC] : Connaissances aiguës sur les pics de manque (vagues de 3-5 min), l'utilité des substituts nicotiniques, les mécanismes réflexes comportementaux (brossage de dent, hydratation) et le nettoyage biologique des poumons.
+   - Si [CANNABIS] : Connaissances sur la gestion du sommeil paradoxal (rêves intenses au début), le retour de la clarté mentale, le métabolisme de déstockage du THC dans les graisses (1 mois) et la recalibration de la dopamine via des activités gratifiantes (sport, tâches cognitives).
+
+3. FORMAT DES RÉPONSES :
+   - Fais des réponses concises, structurées et faciles à lire (pas de gros blocs de texte). Utilise des listes à puces si nécessaire.
+   - Termine toujours tes messages par une question ouverte ou une incitation douce pour maintenir le dialogue.
+
+Dis bonjour chaleureusement à l'utilisateur, demande-lui comment se passe sa journée ou s'il a un point précis (gestion du stress, rituels, manque) qu'il souhaite aborder avec toi dès maintenant.`;
+
+            modalText.innerHTML = `
+                <p>Tu peux utiliser ce prompt structuré pour lancer une discussion hautement personnalisée avec une IA (ChatGPT, Gemini, Claude, etc.). L'IA endossera immédiatement le rôle d'un expert en addictologie bienveillant et connecté à ton calendrier actuel.</p>
+                <textarea id="promptBox" class="prompt-textarea" readonly>${systemPrompt}</textarea>
+                <button class="btn-copy" onclick="copyPrompt()">📋 <span id="copyBtnText">Copier le prompt dans le presse-papiers</span></button>
+            `;
+            modal.style.display = "flex";
+        }
+
+        function copyPrompt() {
+            const promptBox = document.getElementById("promptBox");
+            promptBox.select();
+            promptBox.setSelectionRange(0, 99999); // Pour mobiles
+
+            navigator.clipboard.writeText(promptBox.value).then(() => {
+                const btnText = document.getElementById("copyBtnText");
+                btnText.innerText = "Copié !";
+                btnText.style.color = "#b39ddb";
+                setTimeout(() => {
+                    btnText.innerText = "Copier le prompt dans le presse-papiers";
+                    btnText.style.color = "#ffffff";
+                }, 2000);
+            }).catch(err => {
+                alert("Erreur lors de la copie automatique, sélectionnez le texte manuellement.");
+            });
+        }
 
         function openModal(key) {
-            modalTitle.innerHTML = contentData[key].title;
-            modalText.innerHTML = contentData[key].text;
+            const data = contentData[currentSubstance][key];
+            modalTitle.innerHTML = data.title;
+            
+            let finalHtml = "";
+            const now = new Date().getTime();
+            const timePassedMs = now - targetDate;
+
+            // Si le compteur a commencé (post-arrêt), on injecte le rappel dynamique dans les cas d'urgence
+            if (timePassedMs > 0 && (key === 'craquer' || key === 'craque')) {
+                const joursCoules = Math.floor(timePassedMs / (1000 * 60 * 60 * 24));
+                const estUnCraquageDejàFait = (key === 'craque');
+                const styleClasse = estUnCraquageDejàFait ? 'live-benefit-reminder relapse-mode' : 'live-benefit-reminder panic-mode';
+                
+                const rappelTexte = getLiveBenefitSummary(currentSubstance, joursCoules, estUnCraquageDejàFait);
+                
+                finalHtml += `<div class="${styleClasse}">${rappelTexte}</div>`;
+            }
+
+            // Ajout du contenu textuel standard de la modale
+            finalHtml += data.text;
+            modalText.innerHTML = finalHtml;
+            
+            if (currentSubstance === 'tabac') {
+                modalTitle.className = "modal-title tabac-theme";
+            } else {
+                modalTitle.className = "modal-title cannabis-theme";
+            }
             modal.style.display = "flex";
         }
 
@@ -414,7 +832,13 @@
             }
         }
 
-        const intervalId = setInterval(updateCountdown, 1000);
+        const intervalId = setInterval(() => {
+            updateCountdown();
+            if(countdownSection.style.display === "none") {
+                calculateSavings();
+            }
+        }, 1000);
+
         updateCountdown();
     </script>
 </body>
